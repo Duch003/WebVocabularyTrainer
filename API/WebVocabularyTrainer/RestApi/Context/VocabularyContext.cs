@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RestApi.Context
 {
-    public class VocabularyContext : IdentityDbContext
+    public class VocabularyContext : IdentityDbContext, IVocabularyContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

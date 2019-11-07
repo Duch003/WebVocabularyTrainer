@@ -17,6 +17,10 @@ namespace RestApi.Models
         [Required]
         public string Primary { get; set; }
 
+        public string Description { get; set; }
+        public string[] Examples { get; set; }
+
+        [Range(0, 1)]
         public double LevelOfRecognition { get; set; }
 
         [NotMapped]
