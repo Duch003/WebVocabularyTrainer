@@ -9,6 +9,7 @@ namespace RestApi.Models
 {
     public class Sentence
     {
+        [Key]
         public int ID { get; set; }
 
         [Required]
@@ -18,7 +19,27 @@ namespace RestApi.Models
         public string Primary { get; set; }
 
         public string Description { get; set; }
-        public string[] Examples { get; set; }
+        public string Examples { get; set; }
+
+        [NotMapped]
+        public string[] ExamplesArray 
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(Examples))
+                {
+                    return null;
+                }
+                else
+                {
+                    return Examples.Split(";");
+                }
+            }
+            set
+            {
+                Examples = string.Join(';', value);
+            }
+        }
 
         [Range(0, 1)]
         public double LevelOfRecognition { get; set; }

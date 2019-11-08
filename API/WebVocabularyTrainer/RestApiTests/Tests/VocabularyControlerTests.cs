@@ -12,14 +12,11 @@ namespace RestApiTests.Tests
 {
     public class VocabularyControlerTests
     {
-        private List<Sentence> _dbOutput;
-        private IVocabularyContext _context;
+        private IQueryable<Sentence> _dbOutput;
 
         public VocabularyControlerTests()
         {
             _dbOutput = SentenceFactory.GetSentences();
-            var mockContext = new Mock<IVocabularyContext>();
-            mockContext.As<IQueryable>().Setup(x => x.Provider)
 
         }
 

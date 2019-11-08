@@ -10,9 +10,19 @@ namespace RestApi.Context
 {
     public class VocabularyContext : IdentityDbContext, IVocabularyContext
     {
+        public VocabularyContext(DbContextOptions<VocabularyContext> options) : base(options)
+        {
+
+        }
+
+        public VocabularyContext()
+        {
+
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseInMemoryDatabase("MainDb"); // Wykorzystanie Bazy Danych w Pamięci RAM.
+             //optionsBuilder.UseInMemoryDatabase("MainDb"); // Wykorzystanie Bazy Danych w Pamięci RAM.
         }
 
         public DbSet<Sentence> Sentences { get; set; }

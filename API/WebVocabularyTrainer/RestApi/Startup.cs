@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -28,7 +29,10 @@ namespace RestApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<VocabularyContext>();
+            services.AddDbContext<VocabularyContext>(x =>
+            {
+                x.UseInMemoryDatabase("MainDb");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,47 +53,6 @@ namespace RestApi
             {
                 endpoints.MapControllers();
             });
-
-            Seed();
-        }
-
-        protected void Seed()
-        {
-            var seed = new List<Sentence>();
-            seed.Add(new Sentence
-            {
-                Primary = "Słownik",
-                Foreign = "Vocabulary",
-                LevelOfRecognition = 0,
-            });
-            seed.Add(new Sentence
-            {
-                Primary = "Żona",
-                Foreign = "Wife",
-                LevelOfRecognition = 0,
-            });
-            seed.Add(new Sentence
-            {
-                Primary = "Mąż",
-                Foreign = "Husband",
-                LevelOfRecognition = 0,
-            });
-            seed.Add(new Sentence
-            {
-                Primary = "Dzieci",
-                Foreign = "Children",
-                LevelOfRecognition = 0,
-            });
-            seed.Add(new Sentence
-            {
-                Primary = "Rodzice",
-                Foreign = "Parents",
-                LevelOfRecognition = 0,
-            });
-
-            using var context = new VocabularyContext();
-            context.Sentences.AddRange(seed);
-            context.SaveChanges();
         }
     }
 }

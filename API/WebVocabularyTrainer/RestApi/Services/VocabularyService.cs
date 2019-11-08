@@ -24,8 +24,10 @@ namespace RestApi.Services
             try
             {
                 _logger.Info("Selecting all entries.");
-                return new Result<IEnumerable<Sentence>>(_context.Sentences
-                .ToArray());
+                var found = _context.Sentences
+                    .ToArray();
+                _logger.Info($"Found <<{found.Count()}>> entries.");
+                return new Result<IEnumerable<Sentence>>(found);
             }
             catch(Exception e)
             {
@@ -39,8 +41,10 @@ namespace RestApi.Services
             try
             {
                 _logger.Info($"Selecting entry with ID: <<{id}>>.");
-                return new Result<Sentence>(_context.Sentences
-                .SingleOrDefault(item => item.ID == id));
+                var entry = _context.Sentences
+                    .SingleOrDefault(item => item.ID == id);
+                _logger.Info($"Found entry: <<{entry.ID}>>.");
+                return new Result<Sentence>(entry);
             }
             catch (Exception e)
             {
@@ -54,17 +58,19 @@ namespace RestApi.Services
             _logger.Info($"Selecting entry which contains pattern: <<{pattern}>>.");
             if (string.IsNullOrEmpty(pattern))
             {
-                _logger.Info($"Pattern was null or empty.");
-                return new Result<IEnumerable<Sentence>>(new List<Sentence>());
+                _logger.Info($"Pattern is null or empty. Forwarding to Get() method.");
+                return Get();
             }
             try
             {
-                return new Result<IEnumerable<Sentence>>(_context.Sentences
+                var found = _context.Sentences
                 .Where(item => item.Description.Contains(pattern)
                 || item.Foreign.Contains(pattern)
                 || item.Primary.Contains(pattern)
                 || item.Subject.Contains(pattern)
-                || item.Source.Contains(pattern)));
+                || item.Source.Contains(pattern));
+                _logger.Info($"Found <<{found.Count()}>> entries.");
+                return new Result<IEnumerable<Sentence>>(found);
             }
             catch (Exception e)
             {
@@ -93,8 +99,9 @@ namespace RestApi.Services
             entry.ID = 0;
             try
             {
-                _context.Sentences.Add(entry);
+                var newEntry = _context.Sentences.Add(entry);
                 _context.SaveChanges();
+                _logger.Info($"Entry added: <<{newEntry.Entity.ID}>>.");
                 return new Result<int>(200);
             }
             catch(Exception e)
@@ -130,14 +137,17 @@ namespace RestApi.Services
             }
             catch(Exception e)
             {
+                _logger.Error(e);
                 return new Result<int>(500, e);
             }
         }
 
         public Result<int> Delete(int id)
         {
+            _logger.Info("Removing entry from database.");
             if (id < 0)
             {
+                _logger.Info($"ID is negative: <<{id}>>");
                 return new Result<int>(422, new ArgumentException("ID is negative.")); //Unprocessable entity
             }
 
@@ -145,9 +155,11 @@ namespace RestApi.Services
                 .SingleOrDefault(item => item.ID == id);
             if (existingEntry == null)
             {
+                _logger.Info("Entry does not exists in database.");
                 return new Result<int>(404, new ArgumentException("Entity does not exists in database.")); //Not found
             }
 
+            _logger.Info($"Entry id: <<{existingEntry.ID}>>.");
             try
             {
                 _context.Sentences.Remove(existingEntry);
@@ -156,6 +168,7 @@ namespace RestApi.Services
             }
             catch (Exception e)
             {
+                _logger.Error(e);
                 return new Result<int>(500, e);
             }
         }
