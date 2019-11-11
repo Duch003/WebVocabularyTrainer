@@ -11,8 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using RestApi.Context;
-using RestApi.Models;
+using RestApi.DatabaseAccess.Context;
 
 namespace RestApi
 {
@@ -28,10 +27,11 @@ namespace RestApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
             services.AddControllers();
             services.AddDbContext<VocabularyContext>(x =>
             {
-                x.UseInMemoryDatabase("MainDb");
+                x.UseSqlServer(@"Data Source=DUCH003\TOLEARNINSTANCE;Initial Catalog=TestDb;Integrated Security=True");
             });
         }
 
