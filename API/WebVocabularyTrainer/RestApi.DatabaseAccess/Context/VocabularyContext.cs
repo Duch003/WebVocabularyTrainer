@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RestApi.Data.Models;
 using System;
@@ -22,8 +22,8 @@ namespace RestApi.DatabaseAccess.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //optioasdnsBuilder.UseInMemoryDatabase("MainDb"); // Wykorzystanie Bazy Danych w Pamięci RAM.
-            optionsBuilder.UseSqlServer(@"Data Source=DUCH003\TOLEARNINSTANCE;Initial Catalog=TestDb;Integrated Security=True");
+            optionsBuilder.UseInMemoryDatabase("MainDb"); // Wykorzystanie Bazy Danych w Pamięci RAM.
+            //optionsBuilder.UseSqlServer(@"Data Source=DUCH003\TOLEARNINSTANCE;Initial Catalog=TestDb;Integrated Security=True");
         }
 
         public DbSet<Sentence> Sentences { get; set; }

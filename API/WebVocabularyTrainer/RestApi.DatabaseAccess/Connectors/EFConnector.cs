@@ -21,13 +21,13 @@ namespace RestApi.DatabaseAccess.Connectors
 
         //-1 => null
         //11 => null
-        public async Task<Sentence> GetSentence(int id) 
+        public async Task<Sentence> GetSentenceAsync(int id) 
             => await _context.Sentences
             .SingleOrDefaultAsync(item => item.ID == id);
         
         //null => ArgumentNullException
         //empty => All
-        public async Task<IEnumerable<Sentence>> GetSentences(string pattern)
+        public async Task<IEnumerable<Sentence>> GetSentencesAsync(string pattern)
             => await _context.Sentences
             .Where(item => item.Description.Contains(pattern)
                 || item.Foreign.Contains(pattern)
@@ -40,12 +40,12 @@ namespace RestApi.DatabaseAccess.Connectors
         //null, zły => null
         //null, null => null
         //empty, empty => null
-        public async Task<Sentence> GetSentence(string primary, string foreign)
+        public async Task<Sentence> GetSentenceAsync(string primary, string foreign)
             => await _context.Sentences
             .Where(item => item.Primary.Equals(primary) && item.Foreign.Equals(foreign))
             .FirstOrDefaultAsync();
             
-        public async Task<IEnumerable<Sentence>> GetSentences() 
+        public async Task<IEnumerable<Sentence>> GetSentencesAsync() 
             => await _context.Sentences
             .ToListAsync();
 
@@ -53,7 +53,7 @@ namespace RestApi.DatabaseAccess.Connectors
         //ID -1 - just adds id
         //null => ArgumentNullException
         //Prop null => Microsoft.EntityFrameworkCore.DbUpdateException => SqlException 
-        public async Task Add(Sentence sentence)
+        public async Task AddAsync(Sentence sentence)
         {
             _context.Sentences.Add(sentence);
             await _context.SaveChangesAsync();
@@ -62,7 +62,7 @@ namespace RestApi.DatabaseAccess.Connectors
         //Noexisting => Microsoft.EntityFrameworkCore.DbUpdateException => SqlException 
         //Property set to null => Microsoft.EntityFrameworkCore.DbUpdateException => SqlException 
         //null => ArgumentNullException: 
-        public async Task Update(Sentence sentence)
+        public async Task UpdateAsync(Sentence sentence)
         {
             _context.Sentences.Update(sentence);
             await _context.SaveChangesAsync();
@@ -71,7 +71,7 @@ namespace RestApi.DatabaseAccess.Connectors
         //Noexisting with invalid id (1) => Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException: 
         //Noexisting with valid ID (0) => InvalidOperationException
         //Null => ArgumentNullException
-        public async Task Delete(Sentence sentence)
+        public async Task DeleteAsync(Sentence sentence)
         {
             _context.Sentences.Remove(sentence);
             await _context.SaveChangesAsync();

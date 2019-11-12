@@ -15,6 +15,7 @@ namespace RestApiTests.Tests
 {
     public class VocabularyServiceTests
     {
+        private VocabularyServiceLayer _errorService;
         private VocabularyServiceLayer _service;
         private MockEFConnector _connector;
         private Sentence _entry;
@@ -34,6 +35,7 @@ namespace RestApiTests.Tests
         {
             _connector = EFConnectorFactory.Instance();
             _service = new VocabularyServiceLayer(_connector);
+            _errorService = new VocabularyServiceLayer(EFConnectorFactory.ErrorInstance());
             _entry = new Sentence
             {
                 ID = 0,
@@ -140,7 +142,7 @@ namespace RestApiTests.Tests
         public async void Get_ReturnsAllEntries()
         {
             //Act
-            var output = await _service.Get();
+            var output = await _service.GetAsync().ConfigureAwait(false);
 
             //Assert
             Assert.True(output.IsFine);
@@ -155,7 +157,7 @@ namespace RestApiTests.Tests
             var entry = _connector.Context.Sentences.SingleOrDefault(item => item.ID == 1);
 
             //Act
-            var output = await _service.Get(1);
+            var output = await _service.GetAsync(1).ConfigureAwait(false);
 
             //Assert
             Assert.True(output.IsFine);
@@ -168,7 +170,7 @@ namespace RestApiTests.Tests
         public async void GetWithInt_NegativeIdPassed_ReturnsResultWithNull()
         {
             //Act
-            var output = await _service.Get(-1);
+            var output = await _service.GetAsync(-1).ConfigureAwait(false);
 
             //Assert
             Assert.True(output.IsFine);
@@ -180,7 +182,7 @@ namespace RestApiTests.Tests
         public async void GetWithInt_NoExistingIdPassed_ReturnsResultWithNullEntry()
         {
             //Act
-            var output = await _service.Get(1000);
+            var output = await _service.GetAsync(1000).ConfigureAwait(false);
 
             //Assert
             Assert.True(output.IsFine);
@@ -193,45 +195,45 @@ namespace RestApiTests.Tests
         {
             //Arrange
             var pattern1 = "Dom"; //Primary
-            var output1 = _connector.Context.Sentences.Where(item => item.Description.Contains(pattern1)
-                || item.Foreign.Contains(pattern1)
-                || item.Primary.Contains(pattern1)
-                || item.Subject.Contains(pattern1)
-                || item.Source.Contains(pattern1));
+            var output1 = _connector.Context.Sentences.Where(item => item.Description.Contains(pattern1, StringComparison.InvariantCultureIgnoreCase)
+                || item.Foreign.Contains(pattern1, StringComparison.InvariantCultureIgnoreCase)
+                || item.Primary.Contains(pattern1, StringComparison.InvariantCultureIgnoreCase)
+                || item.Subject.Contains(pattern1, StringComparison.InvariantCultureIgnoreCase)
+                || item.Source.Contains(pattern1, StringComparison.InvariantCultureIgnoreCase));
 
             var pattern2 = "Table"; //Foreign
-            var output2 = _connector.Context.Sentences.Where(item => item.Description.Contains(pattern2)
-                || item.Foreign.Contains(pattern2)
-                || item.Primary.Contains(pattern2)
-                || item.Subject.Contains(pattern2)
-                || item.Source.Contains(pattern2));
+            var output2 = _connector.Context.Sentences.Where(item => item.Description.Contains(pattern2, StringComparison.InvariantCultureIgnoreCase)
+                || item.Foreign.Contains(pattern2, StringComparison.InvariantCultureIgnoreCase)
+                || item.Primary.Contains(pattern2, StringComparison.InvariantCultureIgnoreCase)
+                || item.Subject.Contains(pattern2, StringComparison.InvariantCultureIgnoreCase)
+                || item.Source.Contains(pattern2, StringComparison.InvariantCultureIgnoreCase));
 
             var pattern3 = "Kitchen"; //Subject
-            var output3 = _connector.Context.Sentences.Where(item => item.Description.Contains(pattern3)
-                || item.Foreign.Contains(pattern3)
-                || item.Primary.Contains(pattern3)
-                || item.Subject.Contains(pattern3)
-                || item.Source.Contains(pattern3));
+            var output3 = _connector.Context.Sentences.Where(item => item.Description.Contains(pattern3, StringComparison.InvariantCultureIgnoreCase)
+                || item.Foreign.Contains(pattern3, StringComparison.InvariantCultureIgnoreCase)
+                || item.Primary.Contains(pattern3, StringComparison.InvariantCultureIgnoreCase)
+                || item.Subject.Contains(pattern3, StringComparison.InvariantCultureIgnoreCase)
+                || item.Source.Contains(pattern3, StringComparison.InvariantCultureIgnoreCase));
 
             var pattern4 = "Dictionary"; //Source
-            var output4 = _connector.Context.Sentences.Where(item => item.Description.Contains(pattern4)
-                || item.Foreign.Contains(pattern4)
-                || item.Primary.Contains(pattern4)
-                || item.Subject.Contains(pattern4)
-                || item.Source.Contains(pattern4));
+            var output4 = _connector.Context.Sentences.Where(item => item.Description.Contains(pattern4, StringComparison.InvariantCultureIgnoreCase)
+                || item.Foreign.Contains(pattern4, StringComparison.InvariantCultureIgnoreCase)
+                || item.Primary.Contains(pattern4, StringComparison.InvariantCultureIgnoreCase)
+                || item.Subject.Contains(pattern4, StringComparison.InvariantCultureIgnoreCase)
+                || item.Source.Contains(pattern4, StringComparison.InvariantCultureIgnoreCase));
 
             var pattern5 = "machine"; //Description
-            var output5 = _connector.Context.Sentences.Where(item => item.Description.Contains(pattern5)
-                || item.Foreign.Contains(pattern5)
-                || item.Primary.Contains(pattern5)
-                || item.Subject.Contains(pattern5)
-                || item.Source.Contains(pattern5));
+            var output5 = _connector.Context.Sentences.Where(item => item.Description.Contains(pattern5, StringComparison.InvariantCultureIgnoreCase)
+                || item.Foreign.Contains(pattern5, StringComparison.InvariantCultureIgnoreCase)
+                || item.Primary.Contains(pattern5, StringComparison.InvariantCultureIgnoreCase)
+                || item.Subject.Contains(pattern5, StringComparison.InvariantCultureIgnoreCase)
+                || item.Source.Contains(pattern5, StringComparison.InvariantCultureIgnoreCase));
             //Act
-            var test1 = await _service.Get(pattern1);
-            var test2 = await _service.Get(pattern2);
-            var test3 = await _service.Get(pattern3);
-            var test4 = await _service.Get(pattern4);
-            var test5 = await _service.Get(pattern5);
+            var test1 = await _service.GetAsync(pattern1).ConfigureAwait(false);
+            var test2 = await _service.GetAsync(pattern2).ConfigureAwait(false);
+            var test3 = await _service.GetAsync(pattern3).ConfigureAwait(false);
+            var test4 = await _service.GetAsync(pattern4).ConfigureAwait(false);
+            var test5 = await _service.GetAsync(pattern5).ConfigureAwait(false);
 
             //Assert
             Assert.True(test1.IsFine);
@@ -264,7 +266,7 @@ namespace RestApiTests.Tests
         public async void GetWithString_PatternIsNull_ReturnsResultWithAllEntries()
         {
             //Act
-            var output = await _service.Get(null);
+            var output = await _service.GetAsync(null).ConfigureAwait(false);
 
             //Assert
             Assert.True(output.IsFine);
@@ -277,7 +279,7 @@ namespace RestApiTests.Tests
         public async void GetWithString_PatternIsEmpty_ReturnsResultWithAllEntries()
         {
             //Act
-            var output = await _service.Get(string.Empty);
+            var output = await _service.GetAsync(string.Empty).ConfigureAwait(false);
 
             //Assert
             Assert.True(output.IsFine);
@@ -290,7 +292,7 @@ namespace RestApiTests.Tests
         public async void GetWithString_PatternIsWhiteSpace_ReturnsResultWithAllEntries()
         {
             //Act
-            var output = await _service.Get("   ");
+            var output = await _service.GetAsync("   ").ConfigureAwait(false);
 
             //Assert
             Assert.True(output.IsFine);
@@ -303,27 +305,27 @@ namespace RestApiTests.Tests
         public async void GetWithString_PatternIsValidButDoesNotMatchAnything_ReturnsResultWithNoEntries()
         {
             //Act
-            var output = await _service.Get("ThisDoesNotMatchAnythingForSure");
+            var output = await _service.GetAsync("ThisDoesNotMatchAnythingForSure").ConfigureAwait(false);
 
             //Assert
             Assert.True(output.IsFine);
             Assert.Null(output.Exception);
             Assert.NotNull(output.Output);
-            Assert.True(0 == output.Output.Count());
+            Assert.True(!output.Output.Any());
         }
 
         [Fact]
         public async void Add_ReturnsResult200AndUserHasDefaultValuesInOtherProperties()
         {
             //Act
-            var output = await _service.Add(_entry);
+            var output = await _service.AddAsync(_entry).ConfigureAwait(false);
 
             //Assert
             Assert.True(output.IsFine);
             Assert.Null(output.Exception);
             Assert.Equal(200, output.Output);
 
-            var entry = _connector.Context.Sentences.SingleOrDefault(item => item.Primary.Equals("Kolejny"));
+            var entry = _connector.Context.Sentences.SingleOrDefault(item => item.Primary.Equals("Kolejny", StringComparison.InvariantCultureIgnoreCase));
             Assert.NotNull(entry);
             Assert.Equal(0d, entry.LevelOfRecognition);
             Assert.True(entry.Examples is null);
@@ -335,7 +337,7 @@ namespace RestApiTests.Tests
         public async void Add_EntryHasFilledOptionalFields_ReturnsResult200AndUserHasProperlyFilledProperties()
         {
             //Act
-            var output = await _service.Add(_fullEntry);
+            var output = await _service.AddAsync(_fullEntry).ConfigureAwait(false);
 
             //Assert
             Assert.True(output.IsFine);
@@ -346,7 +348,7 @@ namespace RestApiTests.Tests
             //ExamplesArray = new[] { "This is sample sentence with word filled.", "This is another one." },
             //Source = "UnitTests"
 
-            var entry = _connector.Context.Sentences.SingleOrDefault(item => item.Primary.Equals("Wypełniony"));
+            var entry = _connector.Context.Sentences.SingleOrDefault(item => item.Primary.Equals("Wypełniony", StringComparison.InvariantCultureIgnoreCase));
             Assert.NotNull(entry);
             Assert.Equal(0d, entry.LevelOfRecognition);
             Assert.True(entry.Examples == "This is sample sentence with word filled.;This is another one.");
@@ -359,7 +361,7 @@ namespace RestApiTests.Tests
         public async void Add_InputIsNull_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.Add(null);
+            var output = await _service.AddAsync(null).ConfigureAwait(false);
 
             //Assert
             Assert.False(output.IsFine);
@@ -371,33 +373,33 @@ namespace RestApiTests.Tests
         public async void Add_InputsIdIsLargerThanZero_ReturnsResult200AndAddsUser()
         {
             //Act
-            var output = await _service.Add(_negativeIdEntry);
+            var output = await _service.AddAsync(_negativeIdEntry).ConfigureAwait(false);
 
             //Assert
             Assert.True(output.IsFine);
             Assert.Null(output.Exception);
             Assert.Equal(200, output.Output);
-            Assert.NotNull(_connector.Context.Sentences.SingleOrDefault(item => item.Primary.Equals("Nieprawidłowy")));
+            Assert.NotNull(_connector.Context.Sentences.SingleOrDefault(item => item.Primary.Equals("Nieprawidłowy", StringComparison.InvariantCultureIgnoreCase)));
         }
 
         [Fact]
         public async void Add_InputsIdIsLesserThanZero_ReturnsResult200AndAddsUser()
         {
             //Act
-            var output = await _service.Add(_badIdEntry);
+            var output = await _service.AddAsync(_badIdEntry).ConfigureAwait(false);
 
             //Assert
             Assert.True(output.IsFine);
             Assert.Null(output.Exception);
             Assert.Equal(200, output.Output);
-            Assert.NotNull(_connector.Context.Sentences.SingleOrDefault(item => item.Primary.Equals("Nieprawidłowy")));
+            Assert.NotNull(_connector.Context.Sentences.SingleOrDefault(item => item.Primary.Equals("Nieprawidłowy", StringComparison.InvariantCultureIgnoreCase)));
         }
 
         [Fact]
         public async void Add_InputHasNullPrimaryProperty_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.Add(_nullPrimaryEntry);
+            var output = await _service.AddAsync(_nullPrimaryEntry).ConfigureAwait(false);
 
             //Assert
             Assert.False(output.IsFine);
@@ -409,7 +411,7 @@ namespace RestApiTests.Tests
         public async void Add_InputHasEmptyPrimaryProperty_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.Add(_emptyPrimaryEntry);
+            var output = await _service.AddAsync(_emptyPrimaryEntry).ConfigureAwait(false);
 
             //Assert
             Assert.False(output.IsFine);
@@ -421,7 +423,7 @@ namespace RestApiTests.Tests
         public async void Add_InputHasWhiteSpacePrimaryProperty_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.Add(_whiteSpacePrimaryEntry);
+            var output = await _service.AddAsync(_whiteSpacePrimaryEntry).ConfigureAwait(false);
 
             //Assert
             Assert.False(output.IsFine);
@@ -433,7 +435,7 @@ namespace RestApiTests.Tests
         public async void Add_InputHasNullForeignProperty_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.Add(_nullForeignEntry);
+            var output = await _service.AddAsync(_nullForeignEntry).ConfigureAwait(false);
 
             //Assert
             Assert.False(output.IsFine);
@@ -445,7 +447,7 @@ namespace RestApiTests.Tests
         public async void Add_InputHasEmptyForeignProperty_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.Add(_emptyForeignEntry);
+            var output = await _service.AddAsync(_emptyForeignEntry).ConfigureAwait(false);
 
             //Assert
             Assert.False(output.IsFine);
@@ -457,7 +459,7 @@ namespace RestApiTests.Tests
         public async void Add_InputHasWhiteSpaceForeignProperty_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.Add(_whiteSpaceForeignEntry);
+            var output = await _service.AddAsync(_whiteSpaceForeignEntry).ConfigureAwait(false);
 
             //Assert
             Assert.False(output.IsFine);
@@ -469,7 +471,7 @@ namespace RestApiTests.Tests
         public async void Add_InputHasNullSubjectProperty_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.Add(_nullSubjectEntry);
+            var output = await _service.AddAsync(_nullSubjectEntry).ConfigureAwait(false);
 
             //Assert
             Assert.False(output.IsFine);
@@ -481,7 +483,7 @@ namespace RestApiTests.Tests
         public async void Add_InputHasEmptySubjectProperty_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.Add(_emptySubjectEntry);
+            var output = await _service.AddAsync(_emptySubjectEntry).ConfigureAwait(false);
 
             //Assert
             Assert.False(output.IsFine);
@@ -493,12 +495,24 @@ namespace RestApiTests.Tests
         public async void Add_InputHasWhiteSpaceSubjectProperty_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.Add(_whiteSpaceSubjectEntry);
+            var output = await _service.AddAsync(_whiteSpaceSubjectEntry).ConfigureAwait(false);
 
             //Assert
             Assert.False(output.IsFine);
             Assert.NotNull(output.Exception);
             Assert.Equal(422, output.Output);
+        }
+
+        [Fact]
+        public async void Add_ServerError_ReturnsResult500WithException()
+        {
+            //Act
+            var output = await _errorService.AddAsync(_entry).ConfigureAwait(false);
+
+            //Assert
+            Assert.False(output.IsFine);
+            Assert.NotNull(output.Exception);
+            Assert.Equal(500, output.Output);
         }
 
         [Fact]
@@ -514,7 +528,7 @@ namespace RestApiTests.Tests
             update.Subject = "This is updated subject.";
 
             //Act
-            var output = await _service.Update(update);
+            var output = await _service.UpdateAsync(update).ConfigureAwait(false);
 
             //Assert
             Assert.True(output.IsFine);
@@ -534,7 +548,7 @@ namespace RestApiTests.Tests
         public async void Update_InputIsNull_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.Update(null);
+            var output = await _service.UpdateAsync(null).ConfigureAwait(false);
 
             //Assert
             Assert.False(output.IsFine);
@@ -546,7 +560,7 @@ namespace RestApiTests.Tests
         public async void Update_InputHasNullPrimaryProperty_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.Update(_nullPrimaryEntry);
+            var output = await _service.UpdateAsync(_nullPrimaryEntry).ConfigureAwait(false);
 
             //Assert
             Assert.False(output.IsFine);
@@ -558,7 +572,7 @@ namespace RestApiTests.Tests
         public async void Update_InputHasEmptyPrimaryProperty_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.Update(_emptyPrimaryEntry);
+            var output = await _service.UpdateAsync(_emptyPrimaryEntry).ConfigureAwait(false);
 
             //Assert
             Assert.False(output.IsFine);
@@ -570,7 +584,7 @@ namespace RestApiTests.Tests
         public async void Update_InputHasWhiteSpacePrimaryProperty_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.Update(_whiteSpacePrimaryEntry);
+            var output = await _service.UpdateAsync(_whiteSpacePrimaryEntry).ConfigureAwait(false);
 
             //Assert
             Assert.False(output.IsFine);
@@ -582,7 +596,7 @@ namespace RestApiTests.Tests
         public async void Update_InputHasNullForeignProperty_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.Update(_nullForeignEntry);
+            var output = await _service.UpdateAsync(_nullForeignEntry).ConfigureAwait(false);
 
             //Assert
             Assert.False(output.IsFine);
@@ -594,7 +608,7 @@ namespace RestApiTests.Tests
         public async void Update_InputHasEmptyForeignProperty_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.Update(_emptyForeignEntry);
+            var output = await _service.UpdateAsync(_emptyForeignEntry).ConfigureAwait(false);
 
             //Assert
             Assert.False(output.IsFine);
@@ -606,7 +620,7 @@ namespace RestApiTests.Tests
         public async void Update_InputHasWhiteSpaceForeignProperty_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.Update(_whiteSpaceForeignEntry);
+            var output = await _service.UpdateAsync(_whiteSpaceForeignEntry).ConfigureAwait(false);
 
             //Assert
             Assert.False(output.IsFine);
@@ -618,7 +632,7 @@ namespace RestApiTests.Tests
         public async void Update_InputHasNullSubjectProperty_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.Update(_nullSubjectEntry);
+            var output = await _service.UpdateAsync(_nullSubjectEntry).ConfigureAwait(false);
 
             //Assert
             Assert.False(output.IsFine);
@@ -630,7 +644,7 @@ namespace RestApiTests.Tests
         public async void Update_InputHasEmptySubjectProperty_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.Update(_emptySubjectEntry);
+            var output = await _service.UpdateAsync(_emptySubjectEntry).ConfigureAwait(false);
 
             //Assert
             Assert.False(output.IsFine);
@@ -642,7 +656,7 @@ namespace RestApiTests.Tests
         public async void Update_InputHasWhiteSpaceSubjectProperty_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.Update(_whiteSpaceSubjectEntry);
+            var output = await _service.UpdateAsync(_whiteSpaceSubjectEntry).ConfigureAwait(false);
 
             //Assert
             Assert.False(output.IsFine);
@@ -670,8 +684,8 @@ namespace RestApiTests.Tests
             };
 
             //Act
-            var output = await _service.Update(noExistingEntry);
-            var output2 = await _service.Update(noExistingEntry2);
+            var output = await _service.UpdateAsync(noExistingEntry).ConfigureAwait(false);
+            var output2 = await _service.UpdateAsync(noExistingEntry2).ConfigureAwait(false);
 
             //Assert
             Assert.False(output.IsFine);
@@ -683,10 +697,25 @@ namespace RestApiTests.Tests
         }
 
         [Fact]
+        public async void Update_ServerError_ReturnsResult500WithException()
+        {
+            //Arrange
+            var existingEntry = _connector.Context.Sentences.FirstOrDefault(item => item.ID == 1);
+
+            //Act
+            var output = await _errorService.UpdateAsync(existingEntry).ConfigureAwait(false);
+
+            //Assert
+            Assert.False(output.IsFine);
+            Assert.NotNull(output.Exception);
+            Assert.Equal(500, output.Output);
+        }
+
+        [Fact]
         public async void Delete_RemovedEntryFromDatabase_ReturnsResult200()
         {
             //Act
-            var output = await _service.Delete(1);
+            var output = await _service.DeleteAsync(1).ConfigureAwait(false);
 
             //Assert
             Assert.True(output.IsFine);
@@ -698,7 +727,7 @@ namespace RestApiTests.Tests
         public async void Delete_IdIsNegative_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.Delete(-1);
+            var output = await _service.DeleteAsync(-1).ConfigureAwait(false);
 
             //Assert
             Assert.False(output.IsFine);
@@ -710,12 +739,24 @@ namespace RestApiTests.Tests
         public async void Delete_EntryDoesntExists_ReturnsResult404WithException()
         {
             //Act
-            var output = await _service.Delete(500);
+            var output = await _service.DeleteAsync(500).ConfigureAwait(false);
 
             //Assert
             Assert.False(output.IsFine);
             Assert.NotNull(output.Exception);
             Assert.Equal(404, output.Output);
+        }
+
+        [Fact]
+        public async void Delete_ServerError_ReturnsResult500WithException()
+        {
+            //Act
+            var output = await _errorService.DeleteAsync(1).ConfigureAwait(false);
+
+            //Assert
+            Assert.False(output.IsFine);
+            Assert.NotNull(output.Exception);
+            Assert.Equal(500, output.Output);
         }
     }
 }

@@ -6,12 +6,12 @@ namespace RestApi.DatabaseAccess.Connectors
 {
     public interface IConnector
     {
-        Task Add(Sentence sentence);
-        Task Delete(Sentence sentence);
-        Task<Sentence> GetSentence(string primary, string foreign);
-        Task<Sentence> GetSentence(int id);
-        Task<IEnumerable<Sentence>> GetSentences();
-        Task<IEnumerable<Sentence>> GetSentences(string pattern);
-        Task Update(Sentence sentence);
+        Task AddAsync(Sentence sentence);
+        Task DeleteAsync(Sentence sentence);
+        Task<Sentence> GetSentenceAsync(string primary, string foreign);
+        Task<Sentence> GetSentenceAsync(int id);
+        Task<IEnumerable<Sentence>> GetSentencesAsync();
+        Task<IEnumerable<Sentence>> GetSentencesAsync(string pattern);
+        Task UpdateAsync(Sentence sentence);
     }
 }

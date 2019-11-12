@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestApi", "RestApi\RestApi.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestApiTests", "RestApiTests\RestApiTests.csproj", "{5F0FFEBA-5CF2-4EA3-AB2D-C3AF2F8414C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestApi.DatabaseAccess", "RestApi.DatabaseAccess\RestApi.DatabaseAccess.csproj", "{497B7850-D854-4B70-B1AF-7422EBA5B6F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestApi.DatabaseAccess", "RestApi.DatabaseAccess\RestApi.DatabaseAccess.csproj", "{497B7850-D854-4B70-B1AF-7422EBA5B6F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestApi.Data", "RestApi.Data\RestApi.Data.csproj", "{65C07AD8-F076-4B3E-ABA6-9ED0C7032A4C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestApi.Data", "RestApi.Data\RestApi.Data.csproj", "{65C07AD8-F076-4B3E-ABA6-9ED0C7032A4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsole", "TestConsole\TestConsole.csproj", "{6158E4C6-DF13-42AA-ABF0-5BFBE7389FE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestConsole", "TestConsole\TestConsole.csproj", "{6158E4C6-DF13-42AA-ABF0-5BFBE7389FE5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

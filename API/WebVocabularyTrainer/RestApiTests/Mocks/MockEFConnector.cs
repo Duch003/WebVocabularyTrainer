@@ -18,13 +18,12 @@ namespace RestApiTests.Mocks
             set { _context = value; }
         }
 
-
         internal MockEFConnector(MockVocabularyContext context)
         {
             _context = context;
         }
 
-        public async Task Add(Sentence sentence)
+        public async Task AddAsync(Sentence sentence)
         {
             if (sentence is null)
             {
@@ -41,10 +40,10 @@ namespace RestApiTests.Mocks
             }
 
             _context.Sentences.Add(sentence);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task Delete(Sentence sentence)
+        public async Task DeleteAsync(Sentence sentence)
         {
             if (sentence is null)
             {
@@ -62,28 +61,29 @@ namespace RestApiTests.Mocks
 
             var entry = _context.Sentences.First(item => item.ID == sentence.ID);
             _context.Sentences.Remove(entry);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task<Sentence> GetSentence(string primary, string foreign)
-            => await _context.Sentences.FirstOrDefaultAsync(item => item.Primary == primary && item.Foreign == foreign);
+        public async Task<Sentence> GetSentenceAsync(string primary, string foreign)
+            => await _context.Sentences.FirstOrDefaultAsync(item => item.Primary == primary && item.Foreign == foreign).ConfigureAwait(false);
 
-        public async Task<Sentence> GetSentence(int id)
-            => await _context.Sentences.SingleOrDefaultAsync(item => item.ID == id);
+        public async Task<Sentence> GetSentenceAsync(int id)
+            => await _context.Sentences.SingleOrDefaultAsync(item => item.ID == id).ConfigureAwait(false);
 
-        public async Task<IEnumerable<Sentence>> GetSentences()
-            => await _context.Sentences.ToListAsync();
+        public async Task<IEnumerable<Sentence>> GetSentencesAsync()
+            => await _context.Sentences.ToListAsync().ConfigureAwait(false);
 
-        public async Task<IEnumerable<Sentence>> GetSentences(string pattern)
+        public async Task<IEnumerable<Sentence>> GetSentencesAsync(string pattern)
             => await _context.Sentences
-            .Where(item => item.Description.Contains(pattern)
-                || item.Foreign.Contains(pattern)
-                || item.Primary.Contains(pattern)
-                || item.Subject.Contains(pattern)
-                || item.Source.Contains(pattern))
-            .ToListAsync();
+            .Where(item => item.Description.Contains(pattern, StringComparison.InvariantCultureIgnoreCase)
+                || item.Foreign.Contains(pattern, StringComparison.InvariantCultureIgnoreCase)
+                || item.Primary.Contains(pattern, StringComparison.InvariantCultureIgnoreCase)
+                || item.Subject.Contains(pattern, StringComparison.InvariantCultureIgnoreCase)
+                || item.Source.Contains(pattern, StringComparison.InvariantCultureIgnoreCase))
+            .ToListAsync()
+            .ConfigureAwait(false);
 
-        public async Task Update(Sentence sentence)
+        public async Task UpdateAsync(Sentence sentence)
         {
             if (sentence is null)
             {
@@ -97,11 +97,11 @@ namespace RestApiTests.Mocks
             else if (sentence.Primary is null || sentence.Foreign is null || sentence.Subject is null)
             {
                 var inner = new Exception();
-                throw new DbUpdateException("Message", inner);
+                throw new DbUpdateException("Message2", inner);
             }
 
             _context.Update(sentence);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync().ConfigureAwait(false);
         }
     }
 }

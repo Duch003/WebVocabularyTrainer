@@ -25,10 +25,10 @@ namespace TestConsole
                 Subject = "c"
             };
 
-            var entry = connector.GetSentence(55);
+            //var entry = connector.GetSentence(55);
             
 
-            connector.Delete(valid);
+            //connector.Delete(valid);
 
             Console.ReadLine();
         }
