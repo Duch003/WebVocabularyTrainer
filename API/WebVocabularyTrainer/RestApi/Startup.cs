@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -33,7 +34,7 @@ namespace RestApi
         {
             services.AddTransient<IVocabularyService, VocabularyService>();
             services.AddTransient<IConnector, EFConnector>();
-
+            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<VocabularyContext>();
             services.AddMvc();
             services.AddControllers();
             services.AddDbContext<VocabularyContext>(x =>
@@ -50,11 +51,11 @@ namespace RestApi
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

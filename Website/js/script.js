@@ -1,7 +1,7 @@
 function getSentences(){
     var output = {
         async: true,
-        url: "/api/vocabulary",
+        url: "https://localhost:44352/api/Vocabulary",
         data: {},
         type: "GET",
     }; 
@@ -58,11 +58,12 @@ function getSentence(id){
 }
 
 $(window).ready(function(){
-    $.ajax(getSentences()).done(function(result){
-        console.log(result);
-    }).fail(function(xhr, stat, err){
-        console.log(xhr);
-        console.log(stat);
-        console.log(err);
-    });
+    console.log($.ajax())
+    // $.ajax().done(function(result){
+    //     console.log(result);
+    // }).fail(function(xhr, stat, err){
+    //     console.log(xhr);
+    //     console.log(stat);
+    //     console.log(err);
+    // });
 });
