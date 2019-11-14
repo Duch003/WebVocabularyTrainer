@@ -41,7 +41,7 @@ namespace RestApi.Controllers
             catch(Exception e)
             {
                 _logger.Error(e, $"[{IPService.GetSenderIPAddress(this)}] Output: Unprocessable entity / (422).");
-                return StatusCode(422, "Unprocessable entity");
+                return StatusCode(422, "Unprocessable entity.");
             }
             
             if (ModelState.IsValid)

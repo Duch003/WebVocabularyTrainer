@@ -34,6 +34,7 @@ namespace RestApi.Controllers
             {
                 _logger.Info($"[{IPService.GetSenderIPAddress(this)}] Output: {result.Output.Count()} entries / (200).");
                 return Ok(result.Output);
+                
             }
             _logger.Error(result.Exception, $"[{IPService.GetSenderIPAddress(this)}] Output: 0 entries / (500).");
             return StatusCode(500);
@@ -70,18 +71,19 @@ namespace RestApi.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody]JObject data)
+        public async Task<IActionResult> Update([FromBody]IEnumerable<string> data)
         {
             _logger.Info($"[{IPService.GetSenderIPAddress(this)}] Requested to update entry.");
-            var entry = data.ToObject<Sentence>();
-            var result = await _vocabularyService.UpdateAsync(entry).ConfigureAwait(false);
-            if (result.IsFine)
-            {
-                _logger.Info($"[{IPService.GetSenderIPAddress(this)}] Output: ({result.Output}).");
-                return StatusCode(result.Output);
-            }
-            _logger.Error($"[{IPService.GetSenderIPAddress(this)}] Output: {result.Exception.Message} / ({result.Output}).");
-            return StatusCode(result.Output, result.Exception.Message);
+            return Ok();
+            //var entry = data.ToObject<Sentence>();
+            //var result = await _vocabularyService.UpdateAsync(entry).ConfigureAwait(false);
+            //if (result.IsFine)
+            //{
+            //    _logger.Info($"[{IPService.GetSenderIPAddress(this)}] Output: ({result.Output}).");
+            //    return StatusCode(result.Output);
+            //}
+            //_logger.Error($"[{IPService.GetSenderIPAddress(this)}] Output: {result.Exception.Message} / ({result.Output}).");
+            //return StatusCode(result.Output, result.Exception.Message);
         }
 
         [HttpDelete("{id}")]

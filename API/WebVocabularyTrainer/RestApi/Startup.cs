@@ -32,6 +32,10 @@ namespace RestApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(setup =>
+            {
+                setup.AddDefaultPolicy(policy => policy.AllowAnyOrigin());
+            });
             services.AddTransient<IVocabularyService, VocabularyService>();
             services.AddTransient<IConnector, EFConnector>();
             services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<VocabularyContext>();
@@ -49,6 +53,7 @@ namespace RestApi
         {
             if (env.IsDevelopment())
             {
+                app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
                 app.UseDeveloperExceptionPage();
             }
             
