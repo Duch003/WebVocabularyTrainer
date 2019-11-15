@@ -1,5 +1,7 @@
-﻿using RestApi.Data.Models;
+﻿using Microsoft.AspNetCore.Identity;
+using RestApi.Data.Models;
 using RestApi.DatabaseAccess.Connectors;
+using RestApi.DatabaseAccess.Context;
 using RestApiTests.Factories;
 using System;
 using System.Linq;
@@ -10,8 +12,14 @@ namespace TestConsole
     {
         static void Main(string[] args)
         {
-            var sentences = SentenceFactory.GetSentences().ToList();
-            var connector = new EFConnector();
+            var context = new VocabularyContext();
+            //context.Users.Add(null); //ArgumentNullException()
+            
+            
+
+            context.Users.Add(null);
+            //var sentences = SentenceFactory.GetSentences().ToList();
+            var connector = new EFSentenceConnector();
             //foreach (var item in sentences)
             //{
             //    connector.Add(item);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -9,6 +10,7 @@ using NLog;
 using RestApi.Data.Models;
 using RestApi.Interfaces;
 using RestApi.Services;
+using Newtonsoft.Json;
 
 namespace RestApi.Controllers
 {
@@ -71,19 +73,19 @@ namespace RestApi.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody]IEnumerable<string> data)
+        [Produces("application/xml")]
+        public async Task<IActionResult> Update([FromBody]JsonElement data)
         {
             _logger.Info($"[{IPService.GetSenderIPAddress(this)}] Requested to update entry.");
-            return Ok();
-            //var entry = data.ToObject<Sentence>();
-            //var result = await _vocabularyService.UpdateAsync(entry).ConfigureAwait(false);
-            //if (result.IsFine)
-            //{
-            //    _logger.Info($"[{IPService.GetSenderIPAddress(this)}] Output: ({result.Output}).");
-            //    return StatusCode(result.Output);
-            //}
-            //_logger.Error($"[{IPService.GetSenderIPAddress(this)}] Output: {result.Exception.Message} / ({result.Output}).");
-            //return StatusCode(result.Output, result.Exception.Message);
+            var entry = JsonConvert.DeserializeObject<Sentence>(data.ToString());
+            var result = await _vocabularyService.UpdateAsync(entry).ConfigureAwait(false);
+            if (result.IsFine)
+            {
+                _logger.Info($"[{IPService.GetSenderIPAddress(this)}] Output: ({result.Output}).");
+                return StatusCode(result.Output);
+            }
+            _logger.Error($"[{IPService.GetSenderIPAddress(this)}] Output: {result.Exception.Message} / ({result.Output}).");
+            return StatusCode(result.Output, result.Exception.Message);
         }
 
         [HttpDelete("{id}")]

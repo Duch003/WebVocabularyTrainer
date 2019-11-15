@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace RestApi.DatabaseAccess.Connectors
 {
-    public class EFConnector : IConnector
+    public class EFSentenceConnector : ISentenceConnector
     {
         private readonly VocabularyContext _context;
 
-        public EFConnector()
+        public EFSentenceConnector()
         {
             _context = new VocabularyContext();
         }
@@ -65,7 +65,14 @@ namespace RestApi.DatabaseAccess.Connectors
         //null => ArgumentNullException: 
         public async Task UpdateAsync(Sentence sentence)
         {
-            _context.Sentences.Update(sentence);
+            var current = _context.Sentences.First(item => item.ID == sentence.ID);
+            if(current != null)
+            {
+                _context.Entry(current).State = EntityState.Detached;
+            } 
+
+            _context.Entry(sentence).State = EntityState.Modified;
+            
             await _context.SaveChangesAsync();
         }
 

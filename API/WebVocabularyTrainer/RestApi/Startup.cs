@@ -37,15 +37,18 @@ namespace RestApi
                 setup.AddDefaultPolicy(policy => policy.AllowAnyOrigin());
             });
             services.AddTransient<IVocabularyService, VocabularyService>();
-            services.AddTransient<IConnector, EFConnector>();
+            services.AddTransient<ISentenceConnector, EFSentenceConnector>();
             services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<VocabularyContext>();
             services.AddMvc();
             services.AddControllers();
             services.AddDbContext<VocabularyContext>(x =>
             {
                 //x.UseSqlServer(@"Data Source=DUCH003\TOLEARNINSTANCE;Initial Catalog=TestDb;Integrated Security=True");
-                x.UseInMemoryDatabase("TestDb");
+                //x.UseInMemoryDatabase("TestDb");
+                x.UseSqlServer(@"Data Source=OBONB1024\SQLEXPRESS02;Initial Catalog=TestDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             });
+            services.AddTransient<UserManager<IdentityUser>>();
+            services.AddTransient<SignInManager<IdentityUser>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

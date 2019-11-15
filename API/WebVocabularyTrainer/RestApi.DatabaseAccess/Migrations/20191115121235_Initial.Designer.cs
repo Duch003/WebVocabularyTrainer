@@ -10,7 +10,7 @@ using RestApi.DatabaseAccess.Context;
 namespace RestApi.DatabaseAccess.Migrations
 {
     [DbContext(typeof(VocabularyContext))]
-    [Migration("20191110235820_Initial")]
+    [Migration("20191115121235_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

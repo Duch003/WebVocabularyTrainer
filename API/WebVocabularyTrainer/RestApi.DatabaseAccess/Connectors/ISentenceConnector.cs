@@ -4,7 +4,7 @@ using RestApi.Data.Models;
 
 namespace RestApi.DatabaseAccess.Connectors
 {
-    public interface IConnector
+    public interface ISentenceConnector
     {
         Task AddAsync(Sentence sentence);
         Task DeleteAsync(Sentence sentence);

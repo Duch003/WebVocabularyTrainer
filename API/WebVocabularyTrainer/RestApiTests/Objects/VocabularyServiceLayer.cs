@@ -8,12 +8,12 @@ namespace RestApiTests.Objects
 {
     public class VocabularyServiceLayer : VocabularyService
     {
-        public VocabularyServiceLayer(IConnector connector) : base(connector)
+        public VocabularyServiceLayer(ISentenceConnector connector) : base(connector)
         {
 
         }
 
-        public IConnector Connector 
+        public ISentenceConnector Connector 
         {
             get
             {

@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using Microsoft.AspNetCore.Authorization;
+using NLog;
 using RestApi.Data.Models;
 using RestApi.DatabaseAccess.Connectors;
 using RestApi.Interfaces;
@@ -9,12 +10,13 @@ using System.Threading.Tasks;
 
 namespace RestApi.Services
 {
+    [Authorize]
     public class VocabularyService : IVocabularyService
     {
-        protected IConnector _connector;
+        protected ISentenceConnector _connector;
         protected Logger _logger;
 
-        public VocabularyService(IConnector connector)
+        public VocabularyService(ISentenceConnector connector)
         {
             _connector = connector;
             _logger = LogManager.GetCurrentClassLogger();

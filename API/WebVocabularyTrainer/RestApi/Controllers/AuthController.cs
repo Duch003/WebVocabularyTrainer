@@ -13,7 +13,6 @@ using RestApi.ViewModels;
 
 namespace RestApi.Controllers
 {
-    [AllowAnonymous]
     [ApiController]
     [Route("api/[controller]")]
     public class AuthController : Controller
@@ -29,7 +28,14 @@ namespace RestApi.Controllers
             _logger = LogManager.GetCurrentClassLogger();
         }
 
-        [HttpPost]
+        [HttpGet("Test")]
+        public async Task<IActionResult> Test()
+        {
+            var user = await _userManager.CreateAsync(new IdentityUser("Duch003"), "Killer003!");
+            return Ok();
+        }
+
+        [HttpPost("{register}")]
         public async Task<IActionResult> CreateUser([FromBody]JObject data)
         {
             _logger.Info($"[{IPService.GetSenderIPAddress(this)}] Requested to add new user.");
@@ -60,12 +66,59 @@ namespace RestApi.Controllers
                         var builder = new StringBuilder();
                         foreach (var error in result.Errors)
                         {
-                            builder.Append($"{error.Description} ");
+                            builder.AppendLine(error.Description);
                         }
                         return BadRequest(builder.ToString());
                     }
                 }
                 catch(Exception e)
+                {
+                    _logger.Error(e, $"[{IPService.GetSenderIPAddress(this)}] Output: Server error / (500).");
+                    return StatusCode(500, "Server error");
+                }
+            }
+            _logger.Info($"[{IPService.GetSenderIPAddress(this)}] Output: ModelState is invalid / (400).");
+            return BadRequest("ModelState is invalid.");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Authenticate([FromBody]JObject data)
+        {
+            _logger.Info($"[{IPService.GetSenderIPAddress(this)}] Requested to add new user.");
+            UserViewModel viewModel = null;
+            try
+            {
+                viewModel = data.ToObject<UserViewModel>();
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e, $"[{IPService.GetSenderIPAddress(this)}] Output: Unprocessable entity / (422).");
+                return StatusCode(422, "Unprocessable entity.");
+            }
+
+
+            if (ModelState.IsValid)
+            {
+                var user = new IdentityUser(viewModel.Login);
+                try
+                {
+                    var result = await _userManager.CreateAsync(user, viewModel.Password);
+                    if (result.Succeeded)
+                    {
+                        _logger.Info($"[{IPService.GetSenderIPAddress(this)}] Output: User {user.UserName} created / (200).");
+                        return Ok($"User {user.UserName} created.");
+                    }
+                    else
+                    {
+                        var builder = new StringBuilder();
+                        foreach (var error in result.Errors)
+                        {
+                            builder.AppendLine(error.Description);
+                        }
+                        return BadRequest(builder.ToString());
+                    }
+                }
+                catch (Exception e)
                 {
                     _logger.Error(e, $"[{IPService.GetSenderIPAddress(this)}] Output: Server error / (500).");
                     return StatusCode(500, "Server error");

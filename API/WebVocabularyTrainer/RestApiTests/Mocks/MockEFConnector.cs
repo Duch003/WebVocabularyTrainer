@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RestApiTests.Mocks
 {
-    public class MockEFConnector : IConnector
+    public class MockEFConnector : ISentenceConnector
     {
         private MockVocabularyContext _context;
         public MockVocabularyContext Context
