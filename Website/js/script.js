@@ -1,9 +1,10 @@
+//https://localhost:44352
 function getSentences(){
     var output = {
         async: true,
-        url: "https://localhost:44352/api/Vocabulary",
+        url: "https://localhost:44352/api/vocabulary",
         data: {},
-        type: "GET",
+        type: "GET"
     }; 
 
     return output;
@@ -12,10 +13,9 @@ function getSentences(){
 function addSentence(sentence){
     var output = {
         async: true,
-        url: "/api/vocabulary",
+        url: "https://localhost:44352/api/vocabulary",
         data: {sentence},
-        type: "POST",
-        dataType: "json",
+        type: "POST"
     }; 
 
     return output;
@@ -24,10 +24,10 @@ function addSentence(sentence){
 function updateSentence(sentence){
     var output = {
         async: true,
-        url: "/api/vocabulary",
-        data: {sentence},
+        url: "https://localhost:44352/api/vocabulary",
+        data: JSON.stringify(sentence),
         type: "PUT",
-        dataType: "json"
+        contentType: "application/json",
     }; 
 
     return output;
@@ -36,10 +36,9 @@ function updateSentence(sentence){
 function deleteSentence(id){
     var output = {
         async: true,
-        url: "/api/vocabulary",
+        url: "https://localhost:44352/api/vocabulary/" + id,
         data: {},
         type: "DELETE",
-        dataType: "json"
     }; 
 
     return output;
@@ -48,22 +47,41 @@ function deleteSentence(id){
 function getSentence(id){
     var output = {
         async: true,
-        url: "/api/vocabulary/" + id,
+        url: "https://localhost:44352/api/vocabulary/" + id,
         data: {},
-        type: "GET",
-        dataType: "json"
+        type: "GET"
     }; 
 
     return output;
 }
 
+function ajaxSuccess(result){
+    console.log(result);
+}
+
+function ajaxFail(a, b, c){
+    console.log(a);
+    console.log(b);
+    console.log(c);
+}
+
 $(window).ready(function(){
-    console.log($.ajax())
-    // $.ajax().done(function(result){
-    //     console.log(result);
-    // }).fail(function(xhr, stat, err){
-    //     console.log(xhr);
-    //     console.log(stat);
-    //     console.log(err);
-    // });
+    $.ajax(getSentence(3)).done(function(result){
+        console.log(result);
+        result.Foreign = "Fork";
+        $.ajax(updateSentence(result)).done(function(result2){
+            console.log(result2)
+        }).fail(function(a, b, c){
+            console.log(a);
+            console.log(b);
+            console.log(c);
+        });
+    });
+    $.ajax(getSentences()).done(function(result3){
+        console.log(result3);
+    }).fail(function(a, b, c){
+        console.log(a);
+        console.log(b);
+        console.log(c);
+    });
 });
