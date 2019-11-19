@@ -38,7 +38,10 @@ namespace RestApi
             });
             services.AddTransient<IVocabularyService, VocabularyService>();
             services.AddTransient<ISentenceConnector, EFSentenceConnector>();
-            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<VocabularyContext>();
+            services.AddTransient<AuthenticatorTokenProvider<IdentityUser>>();
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<VocabularyContext>()
+                .AddDefaultTokenProviders();
             services.AddMvc();
             services.AddControllers();
             services.AddDbContext<VocabularyContext>(x =>

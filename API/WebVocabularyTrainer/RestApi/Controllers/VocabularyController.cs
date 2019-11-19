@@ -11,9 +11,11 @@ using RestApi.Data.Models;
 using RestApi.Interfaces;
 using RestApi.Services;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RestApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class VocabularyController : Controller
