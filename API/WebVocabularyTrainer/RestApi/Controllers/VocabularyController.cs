@@ -12,14 +12,18 @@ using RestApi.Interfaces;
 using RestApi.Services;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace RestApi.Controllers
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthSchemes)]
     [ApiController]
     [Route("api/[controller]")]
     public class VocabularyController : Controller
     {
+        private const string AuthSchemes = CookieAuthenticationDefaults.AuthenticationScheme + "," + JwtBearerDefaults.AuthenticationScheme;
         protected IVocabularyService _vocabularyService;
         protected Logger _logger;
 

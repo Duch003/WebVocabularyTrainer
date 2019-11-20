@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Bogus;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using RestApi.Data.Models;
 using RestApi.DatabaseAccess.Connectors;
 using RestApi.DatabaseAccess.Context;
@@ -32,11 +37,37 @@ namespace RestApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(60);
+            });
             services.AddCors(setup =>
             {
                 setup.AddDefaultPolicy(policy => policy.AllowAnyOrigin());
             });
+            //https://www.codeproject.com/Articles/5160941/ASP-NET-CORE-Token-Authentication-and-Authorizatio
+            services.AddAuthentication(auth =>
+            {
+                auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(token =>
+            {
+                token.RequireHttpsMetadata = false;
+                token.SaveToken = true;
+                token.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(GenerateRandomEncryptionKey()),
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = "https://localhost:44352",
+                    RequireExpirationTime = true,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+
+            });
             services.AddTransient<IVocabularyService, VocabularyService>();
+            services.AddTransient<TokenService>();
             services.AddTransient<ISentenceConnector, EFSentenceConnector>();
             services.AddTransient<AuthenticatorTokenProvider<IdentityUser>>();
             services.AddIdentity<IdentityUser, IdentityRole>()
@@ -62,9 +93,18 @@ namespace RestApi
                 app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
                 app.UseDeveloperExceptionPage();
             }
-            
-            app.UseHttpsRedirection();
+            app.UseSession();
+            app.Use(async (context, next) =>
+            {
+                var JWToken = context.Session.GetString("JWToken");
+                if (!string.IsNullOrEmpty(JWToken))
+                {
+                    context.Request.Headers.Add("Authorization", "Bearer " + JWToken);
+                }
+                await next();
+            });
 
+            app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
@@ -74,6 +114,15 @@ namespace RestApi
                 endpoints.MapControllers();
             });
             Seed();
+        }
+
+        private byte[] GenerateRandomEncryptionKey()
+        {
+            //var faker = new Faker<string>();
+            //faker.RuleFor(x => x, x => x.Random.AlphaNumeric(32));
+            //var output = Encoding.ASCII.GetBytes(faker.Generate());
+            //return output;
+            return Encoding.ASCII.GetBytes("MojaAmavi020793-OFFKDI40NG7:5675253-tyuw-5769-021-kfirox29zoxv");
         }
 
         private void Seed()

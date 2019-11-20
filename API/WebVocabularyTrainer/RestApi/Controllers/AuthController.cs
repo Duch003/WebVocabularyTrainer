@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -34,13 +35,6 @@ namespace RestApi.Controllers
             _singInManager = singInManager;
             _tokenManager = tokenManager;
             _logger = LogManager.GetCurrentClassLogger();
-        }
-
-        [HttpGet("Test")]
-        public async Task<IActionResult> Test()
-        {
-            var user = await _userManager.CreateAsync(new IdentityUser("Duch003"), "Killer003!");
-            return Ok();
         }
 
         [HttpPost("register")]
@@ -92,7 +86,7 @@ namespace RestApi.Controllers
 
         [HttpPost("login")]
         [Produces("application/json")]
-        public async Task<IActionResult> Authenticate([FromBody]JsonElement data)
+        public async Task<IActionResult> Authenticate([FromBody]JsonElement data, [FromServices] TokenService tokenService)
         {
             //_logger.Info($"[{IPService.GetSenderIPAddress(this)}] Requested to add new user.");
             UserViewModel viewModel = null;
@@ -124,30 +118,29 @@ namespace RestApi.Controllers
                 return Unauthorized();
             }
 
-            var authClaims = new[]
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            };
+            var token = tokenService.GenerateToken(user);
 
-            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("OhiUWkHQ71deDRBf13So5ULBOVtf1vX5"));
+            HttpContext.Session.SetString("JWToken", token);
+            //var authClaims = new[]
+            //{
+            //    new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+            //    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            //};
 
-            var token = new JwtSecurityToken(
-                issuer: "localhost",
-                audience: "localhost",
-                expires: DateTime.Now.AddHours(3),
-                claims: authClaims,
-                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-                );
+            //var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("OhiUWkHQ71deDRBf13So5ULBOVtf1vX5"));
 
-            var outputToken = new JwtSecurityTokenHandler().WriteToken(token);
-            var expiriation = token.ValidTo;
+            //var token = new JwtSecurityToken(
+            //    issuer: "localhost",
+            //    audience: "localhost",
+            //    expires: DateTime.Now.AddHours(3),
+            //    claims: authClaims,
+            //    signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+            //    );
 
-            return Ok(new
-            {
-                outputToken,
-                expiriation
-            });
+            //var outputToken = new JwtSecurityTokenHandler().WriteToken(token);
+            //var expiriation = token.ValidTo;
+
+            return Ok(token);
         }
     }
 }

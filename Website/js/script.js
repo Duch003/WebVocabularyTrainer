@@ -98,25 +98,25 @@ function ajaxFail(a, b, c){
 var log = 'Duch003';
 var pass = 'Killer003!';
 $(window).ready(function(){
-    // $.ajax(login(log, pass)).done(function(result){
-    //     $.cookie('token',result.outputToken);
-    //     $.ajaxSetup({
-    //         headers:{
-    //             'Authorization': $.cookie('token')
-    //         }
-    //     });
-    //     console.log(result);
-    //     $.ajax(getSentences()).done(function(result2){
-    //         console.log(result2);
-    //     }).fail(function(a, b, c){
-    //         ajaxFail(a, b, c);
-    //     });
-    // }).fail(function(a, b, c){
-    //     ajaxFail(a, b, c);
-    // });
-    $.ajax(getSentences()).done(function(result2){
-        console.log(result2);
+    $.ajax(login(log, pass)).done(function(result){
+        $.cookie('token',result);
+        $.ajaxSetup({
+            headers:{
+                'Authorization': $.cookie('token')
+            }
+        });
+        console.log($.cookie('token'));
+        $.ajax(getSentences()).done(function(result2){
+            console.log(result2);
+        }).fail(function(a, b, c){
+            ajaxFail(a, b, c);
+        });
     }).fail(function(a, b, c){
         ajaxFail(a, b, c);
     });
+    // $.ajax(getSentences()).done(function(result2){
+    //     console.log(result2);
+    // }).fail(function(a, b, c){
+    //     ajaxFail(a, b, c);
+    // });
 });
