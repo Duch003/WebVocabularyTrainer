@@ -17,8 +17,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace RestApi.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     //[Authorize(AuthSchemes)]
+    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class VocabularyController : Controller

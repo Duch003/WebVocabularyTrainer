@@ -22,6 +22,12 @@ using RestApi.DatabaseAccess.Connectors;
 using RestApi.DatabaseAccess.Context;
 using RestApi.Interfaces;
 using RestApi.Services;
+using OpenIddict.Abstractions;
+using OpenIddict.Core;
+using OpenIddict.Server;
+using OpenIddict.EntityFrameworkCore.Models;
+//using OpenIddict.EntityFrameworkCore;
+//using OpenIddict.Core;
 
 namespace RestApi
 {
@@ -37,6 +43,8 @@ namespace RestApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+           
+
             services.AddSession(options => {
                 options.IdleTimeout = TimeSpan.FromMinutes(60);
             });
@@ -45,27 +53,28 @@ namespace RestApi
                 setup.AddDefaultPolicy(policy => policy.AllowAnyOrigin());
             });
             //https://www.codeproject.com/Articles/5160941/ASP-NET-CORE-Token-Authentication-and-Authorizatio
-            services.AddAuthentication(auth =>
-            {
-                auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(token =>
-            {
-                token.RequireHttpsMetadata = false;
-                token.SaveToken = true;
-                token.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(GenerateRandomEncryptionKey()),
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidAudience = "https://localhost:44352",
-                    RequireExpirationTime = true,
-                    ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero
-                };
-
-            });
+            //services.AddAuthentication(auth =>
+            //{
+            //    auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //}).AddJwtBearer(token =>
+            //{
+            //    //token.RequireHttpsMetadata = false;
+            //    //token.SaveToken = true;
+            //    token.Audience = "https://localhost:44352";
+            //    token.Authority = "https://localhost:44352";
+            //    //token.TokenValidationParameters = new TokenValidationParameters
+            //    //{
+            //    //    ValidateIssuerSigningKey = true,
+            //    //    IssuerSigningKey = new SymmetricSecurityKey(GenerateRandomEncryptionKey()),
+            //    //    ValidateIssuer = true,
+            //    //    ValidateAudience = true,
+            //    //    ValidAudience = "https://localhost:44352",
+            //    //    RequireExpirationTime = true,
+            //    //    ValidateLifetime = true,
+            //    //    ClockSkew = TimeSpan.Zero
+            //    //};
+            //});
             services.AddTransient<IVocabularyService, VocabularyService>();
             services.AddTransient<TokenService>();
             services.AddTransient<ISentenceConnector, EFSentenceConnector>();
@@ -80,9 +89,28 @@ namespace RestApi
                 //x.UseSqlServer(@"Data Source=DUCH003\TOLEARNINSTANCE;Initial Catalog=TestDb;Integrated Security=True");
                 //x.UseInMemoryDatabase("TestDb");
                 x.UseSqlServer(@"Data Source=OBONB1024\SQLEXPRESS02;Initial Catalog=TestDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+                //x.UseOpenIddict();
             });
             services.AddTransient<UserManager<IdentityUser>>();
             services.AddTransient<SignInManager<IdentityUser>>();
+            //services.AddOpenIddict()
+            //   .AddCore(options =>
+            //   {
+            //       options.UseEntityFrameworkCore()
+            //           .UseDbContext<VocabularyContext>();
+            //   }).AddServer(options =>
+            //   {
+            //       options.SetTokenEndpointUris("/connect/token");
+            //       options.AllowPasswordFlow();
+            //        // Register the signing and encryption credentials.
+            //        options.AddDevelopmentEncryptionCertificate()
+            //               .AddDevelopmentSigningCertificate();
+
+            //        // Register the ASP.NET Core host and configure the ASP.NET Core-specific options.
+            //        options.UseAspNetCore()
+            //               .EnableTokenEndpointPassthrough()
+            //               .DisableTransportSecurityRequirement(); // During development, you can disable the HTTPS requirement.
+            //    });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -94,15 +122,22 @@ namespace RestApi
                 app.UseDeveloperExceptionPage();
             }
             app.UseSession();
-            app.Use(async (context, next) =>
-            {
-                var JWToken = context.Session.GetString("JWToken");
-                if (!string.IsNullOrEmpty(JWToken))
-                {
-                    context.Request.Headers.Add("Authorization", "Bearer " + JWToken);
-                }
-                await next();
-            });
+            //app.Use(async (context, next) =>
+            //{
+                
+            //    var JWToken = context.Session.GetString("JWToken");
+
+            //    if (string.IsNullOrWhiteSpace(JWToken))
+            //    {
+            //        JWToken = context.Request.Headers["Authorization"];
+            //    }
+
+            //    if (!string.IsNullOrEmpty(JWToken))
+            //    {
+            //        context.Request.Headers.Add("Authorization", "Bearer " + JWToken);
+            //    }
+            //    await next();
+            //});
 
             app.UseHttpsRedirection();
             app.UseRouting();
