@@ -31,12 +31,84 @@
     <body>
         <header>
             <nav class="navbar navbar- nav-pills bg-dark nav-fill">
-                <a id="navToRules" class="nav-link active" href="#">Zasady gry</a>
-                <a id="navToGame" class="nav-link" href="#">Ucz się</a>
-                <a id="navToEditor" class="nav-link" href="#">Dodaj nowe słowa</a>
+                <a id="navToRules" class="nav-link active" href="#">Rules</a>
+                <a id="navToGame" class="nav-link" href="#">Learn</a>
+                <a id="navToEditor" class="nav-link" href="#">Manage dictionary</a>
+                <a id="navToEditor" class="nav-link" href="#">About</a>
+
                 <span class="navbar-text text-secondary">Autor: Tomasz Mankin</span>
-                
             </nav>
         </header>
+        <main>
+            <div id="rulesContainer" class="row">
+                <p>
+                    Chocolate bar danish tootsie roll apple pie danish. Lemon drops fruitcake macaroon jelly jelly-o 
+                    candy canes fruitcake caramels sugar plum. Muffin chocolate bar carrot cake apple pie halvah lemon 
+                    drops gummi bears oat cake. Marzipan chocolate bar sesame snaps powder caramels danish donut 
+                    caramels cake. Apple pie bonbon toffee soufflé tootsie roll oat cake lemon drops sweet roll. 
+                    Chocolate toffee bonbon biscuit cake jelly beans caramels. Biscuit toffee sesame snaps cake sugar 
+                    plum biscuit soufflé cupcake. Pie dragée croissant tiramisu muffin sweet roll. Cupcake biscuit 
+                    pudding sesame snaps. Candy cupcake pie apple pie gingerbread. Brownie cupcake cotton candy 
+                    pudding jelly beans. Donut gummies soufflé ice cream pie ice cream sweet roll dragée. Jujubes 
+                    jelly beans oat cake lollipop croissant cookie donut. Candy canes sugar plum dragée pudding.
+                    Cotton candy cake cotton candy sesame snaps croissant. Dessert sweet sweet roll cotton candy. 
+                    Ice cream lemon drops topping soufflé ice cream halvah soufflé chocolate cake. Caramels muffin 
+                    cheesecake liquorice topping liquorice fruitcake. Candy biscuit icing apple pie sweet roll icing. 
+                    Cotton candy lollipop topping cupcake halvah. Croissant carrot cake halvah cake cheesecake sweet 
+                    bear claw jujubes tart. Sugar plum lollipop tart powder jelly-o marshmallow. Icing danish halvah 
+                    fruitcake. Pie sweet roll cake tart lollipop bear claw. Brownie topping jujubes candy canes 
+                    caramels gummi bears icing sesame snaps powder. Jelly ice cream dessert gummies tart.
+                </p>
+            </div>
+            <div id="gameContainer" class="row" style="display:none">
+                <p>
+                    Icing candy canes sweet chocolate bar cotton candy gummies halvah toffee marshmallow. Cheesecake 
+                    fruitcake bonbon. Pudding pudding liquorice. Wafer lemon drops toffee pudding jelly beans. Powder 
+                    marzipan pastry dragée oat cake croissant sesame snaps bonbon cotton candy. Tootsie roll ice 
+                    cream soufflé topping muffin. Sweet oat cake marzipan cupcake chocolate jujubes. Sugar plum 
+                    chocolate jelly gummies pastry apple pie oat cake sugar plum liquorice. Apple pie carrot cake 
+                    bear claw chocolate biscuit. Halvah croissant jelly danish chupa chups. Dragée apple pie powder 
+                    powder. Powder donut soufflé.
+                    Cake marzipan caramels candy cake jelly beans candy canes. Dessert jelly jelly beans. Carrot cake 
+                    caramels oat cake powder cotton candy caramels lollipop. Candy canes jelly macaroon tiramisu 
+                    gingerbread powder cupcake donut. Gummies jelly-o gingerbread lemon drops powder pudding 
+                    cheesecake pie. Candy canes caramels jelly chocolate cake donut. Tootsie roll marshmallow 
+                    dessert liquorice sugar plum jelly-o. Lemon drops cotton candy dessert. Bonbon lemon drops gummi 
+                    bears chupa chups caramels cotton candy oat cake jujubes chupa chups. Powder fruitcake cookie 
+                    chocolate cake macaroon macaroon cupcake topping. Fruitcake danish soufflé tiramisu brownie wafer 
+                    cotton candy cupcake. Jelly cake cake.
+                </p>
+            </div>
+            <div id="editorContainer" class="row" style="display:none">
+                <div class="container-fluid">
+                    <div class="col">
+                        <div id="messageContainer" class="alert alert-success" role="alert">
+                            [Miejsce na Wyświetlanie Komunikatów]
+                        </div>
+                        
+                        <table class="table table-responsive table-striped table-light table-hover ">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Primary</th>
+                                    <th scope="col">Foreign</th>
+                                    <th scope="col">Description</th>
+                                    <th scope="col">Examples</th>
+                                    <th scope="col">Source</th>
+                                    <th scope="col">Subject</th>
+                                    <!--<th scope="col">Edit</th>
+                                    <th scope="col">Remove</th>-->
+                                </tr>
+                            </thead>
+                            <tbody id="managementTable">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <div class="row">Icons made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect"> Pixel perfect </a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com </a></div>
+        </footer>
     </body>
 </html>

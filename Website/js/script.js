@@ -95,26 +95,119 @@ function ajaxFail(a, b, c){
     console.log(c);
 }
 
-var log = 'Duch003';
-var pass = 'Killer003!';
-$(window).ready(function(){
-    $.ajax(login(log, pass)).done(function(result){
-        $.cookie('token',result);
-        $.ajaxSetup({
-            headers:{
-                'Authorization': $.cookie('token')
-            }
-        });
-        console.log($.cookie('token'));
-        $.ajax(getSentences()).done(function(result2){
-            console.log(result2);
-        }).fail(function(a, b, c){
-            ajaxFail(a, b, c);
-        });
-    }).fail(function(a, b, c){
+function switchToRules(){
+    navToRulesBtn.addClass("active");
+    navToGameBtn.removeClass("active");
+    navToEditorBtn.removeClass("active");
+    rulesContainer.fadeIn(0);
+    gameContainer.fadeOut(0);
+    editorContainer.fadeOut(0);
+}
+
+function switchToGame(){
+    navToRulesBtn.removeClass("active");
+    navToGameBtn.addClass("active");
+    navToEditorBtn.removeClass("active");
+    rulesContainer.fadeOut(0);
+    gameContainer.fadeIn(0);
+    editorContainer.fadeOut(0);
+}
+
+function switchToEditor(){
+    navToRulesBtn.removeClass("active");
+    navToGameBtn.removeClass("active");
+    navToEditorBtn.addClass("active");
+    rulesContainer.fadeOut(0);
+    gameContainer.fadeOut(0);
+    editorContainer.fadeIn(0);
+    fillTManagementTable();
+}
+
+function fillTManagementTable(){
+    $.ajax(getSentences())
+    .done(function(result){
+        $(managementTable).empty();
+        managementTable.append(processEntries(result));
+    })
+    .fail(function(a, b, c){
         ajaxFail(a, b, c);
     });
-    // $.ajax(getSentences()).done(function(result2){
+}
+
+function processEntries(entries){
+    var output = [];
+    output.push($('<td><a href="#"><img src="img/Add.png" style="height: 64px;" alt="Add"></img></a></td>'));
+
+    $(entries).each(index => {
+        var trElement = $("<tr></tr>");
+        trElement.append($('<th class="align-middle" scope="row">' + entries[index].id + '</th>'));
+        trElement.append($('<td class="align-middle">' + entries[index].primary + '</td>'));
+        trElement.append($('<td class="align-middle">' + entries[index].foreign + '</td>'));
+        if(entries[index].description === null){
+            trElement.append($('<td class="align-middle">-</td>'));
+        }
+        else{
+            trElement.append($('<td class="align-middle">' + entries[index].description + '</td>'));
+        }
+
+        if(entries[index].examplesArray === null){
+            trElement.append($('<td class="align-middle">-</td>'));
+        }
+        else{
+            var examples = [];
+            $(entries[index].examplesArray).each(descIndex => {
+                examples.push($("<span>" + entries[index].examplesArray[descIndex] + "</span>"));
+                examples.push($("<br/>"));
+            });
+            trElement.append($('<td class="align-middle"></td>').append(examples))
+        }
+        trElement.append('<td class="align-middle">' + entries[index].source + '</td>');
+        trElement.append('<td class="align-middle">' + entries[index].subject + '</td>');
+        trElement.append('<td class="align-middle"><a href="#"><img src="img/Edit.png" style="height: 64px;" alt="Edit"></img></a></td>');
+        trElement.append('<td class="align-middle"><a href="#"><img src="img/Remove.png" style="height: 64px;" alt="Remove"></img></a></td>');
+
+        output.push(trElement);
+    });
+    output.push($('<td class="align-middle"><a href="#"><img src="img/Add.png" style="height: 64px;" alt="Add"></img></a></td>'));
+    return output;
+}
+
+var navToRulesBtn;
+var navToGameBtn;
+var navToEditorBtn;
+var rulesContainer;
+var gameContainer;
+var editorContainer;
+var managementTable;
+var messageContainer;
+
+$(window).ready(function(){
+
+    navToRulesBtn = $("#navToRules").click(function(){switchToRules()});
+    navToGameBtn = $("#navToGame").click(function(){switchToGame()});
+    navToEditorBtn = $("#navToEditor").click(function(){switchToEditor()});
+    rulesContainer = $("#rulesContainer");
+    gameContainer = $("#gameContainer");
+    editorContainer = $("#editorContainer");
+    managementTable = $("#managementTable");
+    messageContainer = $("#messageContainer");
+    // $.ajax(login(log, pass)).done(function(result){
+    //     $.cookie('token',result);
+    //     $.ajaxSetup({
+    //         headers:{
+    //             'Authorization': $.cookie('token')
+    //         }
+    //     });
+    //     console.log($.cookie('token'));
+    //     $.ajax(getSentences()).done(function(result2){
+    //         console.log(result2);
+    //     }).fail(function(a, b, c){
+    //         ajaxFail(a, b, c);
+    //     });
+    // }).fail(function(a, b, c){
+    //     ajaxFail(a, b, c);
+    // });
+    // $.ajax(getSentence(2)).done(function(result2){
     //     console.log(result2);
     // }).fail(function(a, b, c){
     //     ajaxFail(a, b, c);
