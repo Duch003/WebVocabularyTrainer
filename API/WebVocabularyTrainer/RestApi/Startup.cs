@@ -87,8 +87,8 @@ namespace RestApi
             services.AddDbContext<VocabularyContext>(x =>
             {
                 //x.UseSqlServer(@"Data Source=DUCH003\TOLEARNINSTANCE;Initial Catalog=TestDb;Integrated Security=True");
-                //x.UseInMemoryDatabase("TestDb");
-                x.UseSqlServer(@"Data Source=OBONB1024\SQLEXPRESS02;Initial Catalog=TestDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+                x.UseInMemoryDatabase("TestDb");
+                //x.UseSqlServer(@"Data Source=OBONB1024\SQLEXPRESS02;Initial Catalog=TestDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
                 //x.UseOpenIddict();
             });
             services.AddTransient<UserManager<IdentityUser>>();
@@ -147,6 +147,7 @@ namespace RestApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+               
             });
             Seed();
         }
