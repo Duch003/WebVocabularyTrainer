@@ -30,13 +30,16 @@
     </head>
     <body>
         <header>
-            <nav class="navbar navbar- nav-pills bg-dark nav-fill">
+            <nav class="navbar fixed-top nav-pills bg-dark nav-fill">
                 <a id="navToRules" class="nav-link active" href="#">Rules</a>
                 <a id="navToGame" class="nav-link" href="#">Learn</a>
                 <a id="navToEditor" class="nav-link" href="#">Manage dictionary</a>
                 <a id="navToAboutBtn" class="nav-link" href="#">About</a>
-
-                <span class="navbar-text text-secondary">Autor: Tomasz Mankin</span>
+                <form class="form-inline my-2 my-lg-0">
+                    <input id="searchBar" readonly class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                </form>
+                
+                <!--<span class="navbar-text text-secondary">Autor: Tomasz Mankin</span>-->
             </nav>
         </header>
         <main>
@@ -96,8 +99,8 @@
                                     <th scope="col">Examples</th>
                                     <th scope="col">Source</th>
                                     <th scope="col">Subject</th>
-                                    <!--<th scope="col">Edit</th>
-                                    <th scope="col">Remove</th>-->
+                                    <th scope="col">Edit</th>
+                                    <th scope="col">Remove</th>
                                 </tr>
                             </thead>
                             <tbody id="managementTable">

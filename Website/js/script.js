@@ -1,4 +1,4 @@
-var domain = 'http://localhost:56847';
+var domain = 'https://localhost:44352';
 function getSentences(){
     var output = {
         async: true,
@@ -10,12 +10,24 @@ function getSentences(){
     return output;
 }
 
+function getFilteredSentences(filter){
+    var output = {
+        async: true,
+        url: domain + "/api/vocabulary/byFilter?filter=" + filter,
+        data: {},
+        type: "GET",
+        //contentType: "application/xml"
+    }; 
+    return output;
+}
+
 function addSentence(sentence){
     var output = {
         async: true,
         url: domain + "/api/vocabulary",
         data: JSON.stringify(sentence),
-        type: "POST"
+        type: "POST",
+        contentType: "application/json"
     }; 
 
     return output;
@@ -27,7 +39,7 @@ function updateSentence(sentence){
         url: domain + "/api/vocabulary",
         data: JSON.stringify(sentence),
         type: "PUT",
-        contentType: "application/json",
+        contentType: "application/json"
     }; 
 
     return output;
@@ -39,15 +51,15 @@ function deleteSentence(id){
         url: domain + "/api/vocabulary/" + id,
         data: {},
         type: "DELETE",
+        contentType: "application/json"
     }; 
-
     return output;
 }
 
 function getSentence(id){
     var output = {
         async: true,
-        url: domain + "/api/vocabulary/" + id,
+        url: domain + "/api/vocabulary/byId?id=" + id,
         data: {},
         type: "GET"
     }; 
@@ -104,6 +116,7 @@ function switchToRules(){
     gameContainer.fadeOut(0);
     editorContainer.fadeOut(0);
     aboutContainer.fadeOut(0);
+    disableSearching();
 }
 
 function switchToGame(){
@@ -115,6 +128,7 @@ function switchToGame(){
     gameContainer.fadeIn(0);
     editorContainer.fadeOut(0);
     aboutContainer.fadeOut(0);
+    disableSearching();
 }
 
 function switchToEditor(){
@@ -126,7 +140,8 @@ function switchToEditor(){
     gameContainer.fadeOut(0);
     editorContainer.fadeIn(0);
     aboutContainer.fadeOut(0);
-    fillTManagementTable();
+    fillManagementTable();
+    enableSearching();
 }
 
 function switchToAbout(){
@@ -138,19 +153,36 @@ function switchToAbout(){
     gameContainer.fadeOut(0);
     editorContainer.fadeOut(0);
     aboutContainer.fadeIn(0);
+    disableSearching();
 }
 
-function fillTManagementTable(){
-    $.ajax(getSentences())
-    .done(function(result){
-        $(managementTable).empty();
-        managementTable.append(processEntries(result));
-        messageContainerPass("Data has been loaded properly.")
-    })
-    .fail(function(a, b, c){
-        messageContainerError("An error has occured while processing query.");
-        ajaxFail(a, b, c);
-    });
+function fillManagementTable(filter){
+    console.log(filter);
+    if(!filter){
+        $.ajax(getSentences())
+        .done(function(result){
+            $(managementTable).empty();
+            managementTable.append(processEntries(result));
+            messageContainerPass("Data has been loaded properly.")
+        })
+        .fail(function(a, b, c){
+            messageContainerError("An error has occured while processing query.");
+            ajaxFail(a, b, c);
+        });
+    }
+    else{
+        $.ajax(getFilteredSentences(filter))
+        .done(function(result){
+            $(managementTable).empty();
+            managementTable.append(processEntries(result));
+            messageContainerPass("Current filter: " + filter + ".")
+        })
+        .fail(function(a, b, c){
+            messageContainerError("An error has occured while processing query.");
+            ajaxFail(a, b, c);
+        });
+    }
+    
 }
 
 function messageContainerError(message){
@@ -176,9 +208,25 @@ function messageContainerInfo(message){
 
 function processEntries(entries){
     var output = [];
-    output.push($('<td><a href="#"><img src="img/Add.png" style="height: 64px;" alt="Add"></img></a></td>'));
-
+    var addButton = $('<tr align="center" class="align-middle"><td colspan="9"><a href="#"><img src="img/Add.png" style="height: 64px;" alt="Add"></img></a></td></tr>');
+    var addButton2 = $('<tr align="center" class="align-middle"><td colspan="9"><a href="#"><img src="img/Add.png" style="height: 64px;" alt="Add"></img></a></td></tr>');
+    $(addButton).click(function(){
+        addForm();
+    });
+    $(addButton2).click(function(){
+        addForm();
+    });
+    output.push(addButton2);
     $(entries).each(index => {
+        var sentence = {
+            ID: entries[index].id,
+            Primary: entries[index].primary,
+            Foreign: entries[index].foreign,
+            Description: entries[index].description,
+            Source: entries[index].source,
+            Examples: entries[index].examples,
+            Subject: entries[index].subject
+        };
         var trElement = $("<tr></tr>");
         trElement.append($('<th class="align-middle" scope="row">' + entries[index].id + '</th>'));
         trElement.append($('<td class="align-middle">' + entries[index].primary + '</td>'));
@@ -201,45 +249,128 @@ function processEntries(entries){
             });
             trElement.append($('<td class="align-middle"></td>').append(examples))
         }
-        trElement.append('<td class="align-middle">' + entries[index].source + '</td>');
-        trElement.append('<td class="align-middle">' + entries[index].subject + '</td>');
-        trElement.append('<td class="align-middle"><a href="#"><img src="img/Edit.png" style="height: 64px;" alt="Edit"></img></a></td>');
-        trElement.append('<td class="align-middle"><a href="#"><img src="img/Remove.png" style="height: 64px;" alt="Remove"></img></a></td>');
+        trElement.append($('<td class="align-middle">' + entries[index].source + '</td>'));
+        trElement.append($('<td class="align-middle">' + entries[index].subject + '</td>'));
+        
+        var editButton = $('<td class="align-middle"><a href="#"><img src="img/Edit.png" style="height: 64px;" alt="Edit"></img></a></td>');
+        $(editButton).click(function(){
+            editForm(sentence);
+        })
+        
+        var removeButton = $('<td class="align-middle"><a href="#"><img src="img/Remove.png" style="height: 64px;" alt="Remove"></img></a></td>');
+        $(removeButton).click(function(){
+            removeSentence(sentence);
+        });
+        trElement.append(editButton);
+        trElement.append(removeButton);
 
         output.push(trElement);
     });
-    output.push($('<td class="align-middle"><a href="#"><img src="img/Add.png" style="height: 64px;" alt="Add"></img></a></td>'));
+    output.push(addButton);
     return output;
 }
 
-function yesNoButtons(){
-    return {
-        confirm: {
-            label: "Yes",
-            className: "btn-success"
-        },
-        cancel: {
-            label: "No",
-            className: "btn-danger"
-        }
-    };
-    
-}
-
-function askQuestion(message, buttons, callback){
+function removeSentence(sentence){
     bootbox.confirm({
-        message: message,
-        buttons: buttons,
+        message: `Are you sure you want to delete given sentence: ${sentence.Primary}: ${sentence.Foreign}?`,
+        buttons: {
+            confirm: {
+                label: "Yes",
+                className: "btn-success"
+            },
+            cancel: {
+                label: "No",
+                className: "btn-danger"
+            }
+        },
         callback: function (result) {
-            callback(result);
+            if(result){
+                $.ajax(deleteSentence(sentence.ID)).done(function(result){
+                    fillManagementTable();
+                    messageContainerPass("Sentence has been removed properly.");
+                }).fail(function(a, b, c){
+                    messageContainerError("An error occured while processing the request.");
+                    console.log(a);
+                    console.log(b);
+                    console.log(c);
+                });
+            }
         }
     });
 }
 
-function addEditForm(){
+function editForm(sentence){
     var form = $(
     `<form>
-    <br/>
+        <br/>
+        <div class="row">
+            <div class="col">
+                <input type="text" name="Foreign" class="form-control" placeholder="Foreign sentence" value="${sentence.Foreign}" />
+            </div>
+            <br/>
+            <div class="col">
+                <input type="text" name="Primary" class="form-control" placeholder="Translation" value="${sentence.Primary}"/>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col">
+                <input type="text" name="Description" class="form-control" placeholder="Description" value="${sentence.Description}"/>
+            </div>
+            <br/>
+            <div class="col">
+                <input type="text" name="Source" class="form-control" placeholder="Source" value="${sentence.Source}"/>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col">
+                <input type="text" name="Subject" class="form-control" placeholder="Subject" value="${sentence.Subject}"/>
+            </div>
+        </div>
+        <br/>
+        <div class="row">
+            <div class="col">
+                <input type="textarea" name="Examples" class="form-control" placeholder="Examples.;Splitted with semicolon." value="${sentence.Examples}"/>
+                <small class="form-text text-muted">Split examples with semicolon.</small>
+            </div>
+        </div>
+    </form>`);
+
+    bootbox.confirm(form,function(result){
+        if(result === false){
+            return;
+        }
+        var primary = form.find('input[name=Primary]').val();
+        var foreign = form.find('input[name=Foreign]').val();
+        var description = form.find('input[name=Description]').val();
+        var source = form.find('input[name=Source]').val();
+        var subject = form.find('input[name=Subject]').val();
+        var examples = form.find('input[name=Examples]').val();
+        var sentenceToEdit = {
+            ID: sentence.ID,
+            Primary: primary,
+            Foreign: foreign,
+            Description: description,
+            Source: source,
+            Examples: examples,
+            Subject: subject
+        }
+
+        $.ajax(updateSentence(sentenceToEdit))
+        .done(function(result){
+            fillManagementTable();
+            messageContainerPass("Phrase has been changed: " + primary + ": " + foreign);
+        }).fail(function(a, b, c){
+            messageContainerError("Could not change phrase.");        
+        });
+    });
+}
+
+function addForm(){
+    var form = $(
+    `<form>
+        <br/>
         <div class="row">
             <div class="col">
                 <input type="text" name="Foreign" class="form-control" placeholder="Foreign sentence"/>
@@ -268,7 +399,7 @@ function addEditForm(){
         <br/>
         <div class="row">
             <div class="col">
-                <input type="textarea" name="Examples" class="form-control" placeholder="Last name"/>
+                <input type="textarea" name="Examples" class="form-control" placeholder="Examples.;Splitted with semicolon."/>
                 <small class="form-text text-muted">Split examples with semicolon.</small>
             </div>
         </div>
@@ -280,6 +411,7 @@ function addEditForm(){
         var foreign = form.find('input[name=Foreign]').val();
         var description = form.find('input[name=Description]').val();
         var source = form.find('input[name=Source]').val();
+        var subject = form.find('input[name=Subject]').val();
         var examples = form.find('input[name=Examples]').val();
 
         var sentence = {
@@ -287,22 +419,38 @@ function addEditForm(){
             Foreign: foreign,
             Description: description,
             Source: source,
-            Examples: examples
+            Examples: examples,
+            Subject: subject
         }
-        console.log(primary);
-        console.log(foreign);
-        console.log(description);
-        console.log(source);
-        console.log(examples);
 
         $.ajax(addSentence(sentence))
         .done(function(result){
-            fillTManagementTable();
+            fillManagementTable(result);
             messageContainerPass("New phrase has been added: " + primary + ": " + foreign);
         }).fail(function(a, b, c){
-            messageContainerError("Could not add new phrase.");
-            ajaxFail(a, b, c);
-        });
+            messageContainerError("Could not add new phrase.");        });
+    });
+}
+
+function enableSearching(){
+    $(searchBar).removeAttr("readonly");
+    $(searchSubmit).removeAttr("disabled");
+}
+
+function disableSearching(){
+    $(searchBar).attr("readonly", "");
+    $(searchSubmit).attr("disabled", "disabled");
+}
+
+function search(){
+    var filter = $(searchBar).val();
+    console.log(filter);
+    $.ajax(getFilteredSentences(filter)).done(function(result){
+        fillManagementTable(result);
+        messageContainerInfo("Current filter: " + filter);
+    }).fail(function(a, b, c){
+        messageContainerError("An error occured while processing query.")
+        ajaxFail(a, b, c);
     });
 }
 
@@ -316,6 +464,8 @@ var managementTable;
 var messageContainer;
 var navToAboutBtn;
 var aboutContainer;
+var searchBar;
+var searchSubmit;
 
 $(window).ready(function(){
 
@@ -329,6 +479,11 @@ $(window).ready(function(){
     editorContainer = $("#editorContainer");
     managementTable = $("#managementTable");
     messageContainer = $("#messageContainer");
+    searchBar = $("#searchBar")
+    $(searchBar).on('input', function(){
+        //search();
+        fillManagementTable($(searchBar).val());
+    });
     //showBootbox("Test", yesNoButtons(), callback);
     // var html = '<form><div class="form-group"><label for="exampleInputEmail1">Email address</label><input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"><small id="emailHelp" class="form-text text-muted">Well never share your email with anyone else.</small></div><div class="form-group"><label for="exampleInputPassword1">Password</label><input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"></div><div class="form-check"><input type="checkbox" class="form-check-input" id="exampleCheck1"><label class="form-check-label" for="exampleCheck1">Check me out</label></div><button type="submit" class="btn btn-primary">Submit</button></form>';
     // bootbox.confirm(html, function(result) {

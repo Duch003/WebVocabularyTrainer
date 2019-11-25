@@ -49,7 +49,7 @@ namespace RestApi.Controllers
             return StatusCode(500);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("byId")]
         public async Task<IActionResult> Get(int id)
         {
             _logger.Info($"[{IPService.GetSenderIPAddress(this)}] Requested entry by id: {id}.");
@@ -63,12 +63,31 @@ namespace RestApi.Controllers
             return StatusCode(500);
         }
 
+        [HttpGet("byFilter")]
+        public async Task<IActionResult> Get(string filter)
+        {
+            if (string.IsNullOrWhiteSpace(filter))
+            {
+                return RedirectToAction("Get");
+            }
+
+            _logger.Info($"[{IPService.GetSenderIPAddress(this)}] Requested entries filtered by: {filter}.");
+            var result = await _vocabularyService.GetAsync(filter).ConfigureAwait(false);
+            if (result.IsFine)
+            {
+                _logger.Info($"[{IPService.GetSenderIPAddress(this)}] Output: 1 entry / (200).");
+                return Ok(result.Output);
+            }
+            _logger.Error(result.Exception, $"[{IPService.GetSenderIPAddress(this)}] Output: 0 entries / (500).");
+            return StatusCode(500);
+        }
+
         //https://stackoverflow.com/questions/14407458/webapi-multiple-put-post-parameters
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody]JObject data)
+        public async Task<IActionResult> Add([FromBody]JsonElement data)
         {
             _logger.Info($"[{IPService.GetSenderIPAddress(this)}] Requested to add new entry.");
-            var newEntry = data.ToObject<Sentence>();
+            var newEntry = JsonConvert.DeserializeObject<Sentence>(data.ToString());
             var result = await _vocabularyService.AddAsync(newEntry).ConfigureAwait(false);
             if (result.IsFine)
             {
