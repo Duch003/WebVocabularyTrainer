@@ -26,7 +26,8 @@
         
         <!-- Style do Edytowania. -->
         <link rel="stylesheet" href="css/style.css">
-        <script src="js/script.js"></script>
+        <link rel="stylesheet" href="css/fontello.css" type="text/css" />
+        <script src="js/script.js" type="text/javascript"></script>
     </head>
     <body>
         <header>
@@ -35,60 +36,140 @@
                 <a id="navToGame" class="nav-link" href="#">Learn</a>
                 <a id="navToEditor" class="nav-link" href="#">Manage dictionary</a>
                 <a id="navToAboutBtn" class="nav-link" href="#">About</a>
-                <form class="form-inline my-2 my-lg-0">
+                <!-- <form class="form-inline my-2 my-lg-0">
                     <input id="searchBar" readonly class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                </form>
-                
-                <!--<span class="navbar-text text-secondary">Autor: Tomasz Mankin</span>-->
+                </form> -->
             </nav>
         </header>
         <main>
-            <div id="rulesContainer" class="row">
-                <p>
-                    Chocolate bar danish tootsie roll apple pie danish. Lemon drops fruitcake macaroon jelly jelly-o 
-                    candy canes fruitcake caramels sugar plum. Muffin chocolate bar carrot cake apple pie halvah lemon 
-                    drops gummi bears oat cake. Marzipan chocolate bar sesame snaps powder caramels danish donut 
-                    caramels cake. Apple pie bonbon toffee soufflé tootsie roll oat cake lemon drops sweet roll. 
-                    Chocolate toffee bonbon biscuit cake jelly beans caramels. Biscuit toffee sesame snaps cake sugar 
-                    plum biscuit soufflé cupcake. Pie dragée croissant tiramisu muffin sweet roll. Cupcake biscuit 
-                    pudding sesame snaps. Candy cupcake pie apple pie gingerbread. Brownie cupcake cotton candy 
-                    pudding jelly beans. Donut gummies soufflé ice cream pie ice cream sweet roll dragée. Jujubes 
-                    jelly beans oat cake lollipop croissant cookie donut. Candy canes sugar plum dragée pudding.
-                    Cotton candy cake cotton candy sesame snaps croissant. Dessert sweet sweet roll cotton candy. 
-                    Ice cream lemon drops topping soufflé ice cream halvah soufflé chocolate cake. Caramels muffin 
-                    cheesecake liquorice topping liquorice fruitcake. Candy biscuit icing apple pie sweet roll icing. 
-                    Cotton candy lollipop topping cupcake halvah. Croissant carrot cake halvah cake cheesecake sweet 
-                    bear claw jujubes tart. Sugar plum lollipop tart powder jelly-o marshmallow. Icing danish halvah 
-                    fruitcake. Pie sweet roll cake tart lollipop bear claw. Brownie topping jujubes candy canes 
-                    caramels gummi bears icing sesame snaps powder. Jelly ice cream dessert gummies tart.
-                </p>
-            </div>
-            <div id="gameContainer" class="row" style="display:none">
-                <p>
-                    Icing candy canes sweet chocolate bar cotton candy gummies halvah toffee marshmallow. Cheesecake 
-                    fruitcake bonbon. Pudding pudding liquorice. Wafer lemon drops toffee pudding jelly beans. Powder 
-                    marzipan pastry dragée oat cake croissant sesame snaps bonbon cotton candy. Tootsie roll ice 
-                    cream soufflé topping muffin. Sweet oat cake marzipan cupcake chocolate jujubes. Sugar plum 
-                    chocolate jelly gummies pastry apple pie oat cake sugar plum liquorice. Apple pie carrot cake 
-                    bear claw chocolate biscuit. Halvah croissant jelly danish chupa chups. Dragée apple pie powder 
-                    powder. Powder donut soufflé.
-                    Cake marzipan caramels candy cake jelly beans candy canes. Dessert jelly jelly beans. Carrot cake 
-                    caramels oat cake powder cotton candy caramels lollipop. Candy canes jelly macaroon tiramisu 
-                    gingerbread powder cupcake donut. Gummies jelly-o gingerbread lemon drops powder pudding 
-                    cheesecake pie. Candy canes caramels jelly chocolate cake donut. Tootsie roll marshmallow 
-                    dessert liquorice sugar plum jelly-o. Lemon drops cotton candy dessert. Bonbon lemon drops gummi 
-                    bears chupa chups caramels cotton candy oat cake jujubes chupa chups. Powder fruitcake cookie 
-                    chocolate cake macaroon macaroon cupcake topping. Fruitcake danish soufflé tiramisu brownie wafer 
-                    cotton candy cupcake. Jelly cake cake.
-                </p>
-            </div>
-            <div id="editorContainer" class="row" style="display:none">
-                <div class="container-fluid">
-                    <div class="col">
-                        <div id="messageContainer" class="alert alert-success" role="alert">
-                            [Miejsce na Wyświetlanie Komunikatów]
+            <div class="container">
+                <div id="rulesContainer" class="row">
+                    <p>
+                        Chocolate bar danish tootsie roll apple pie danish. Lemon drops fruitcake macaroon jelly jelly-o 
+                        candy canes fruitcake caramels sugar plum. Muffin chocolate bar carrot cake apple pie halvah lemon 
+                        drops gummi bears oat cake. Marzipan chocolate bar sesame snaps powder caramels danish donut 
+                        caramels cake. Apple pie bonbon toffee soufflé tootsie roll oat cake lemon drops sweet roll. 
+                        Chocolate toffee bonbon biscuit cake jelly beans caramels. Biscuit toffee sesame snaps cake sugar 
+                        plum biscuit soufflé cupcake. Pie dragée croissant tiramisu muffin sweet roll. Cupcake biscuit 
+                        pudding sesame snaps. Candy cupcake pie apple pie gingerbread. Brownie cupcake cotton candy 
+                        pudding jelly beans. Donut gummies soufflé ice cream pie ice cream sweet roll dragée. Jujubes 
+                        jelly beans oat cake lollipop croissant cookie donut. Candy canes sugar plum dragée pudding.
+                        Cotton candy cake cotton candy sesame snaps croissant. Dessert sweet sweet roll cotton candy. 
+                        Ice cream lemon drops topping soufflé ice cream halvah soufflé chocolate cake. Caramels muffin 
+                        cheesecake liquorice topping liquorice fruitcake. Candy biscuit icing apple pie sweet roll icing. 
+                        Cotton candy lollipop topping cupcake halvah. Croissant carrot cake halvah cake cheesecake sweet 
+                        bear claw jujubes tart. Sugar plum lollipop tart powder jelly-o marshmallow. Icing danish halvah 
+                        fruitcake. Pie sweet roll cake tart lollipop bear claw. Brownie topping jujubes candy canes 
+                        caramels gummi bears icing sesame snaps powder. Jelly ice cream dessert gummies tart.
+
+                        Chocolate bar danish tootsie roll apple pie danish. Lemon drops fruitcake macaroon jelly jelly-o 
+                        candy canes fruitcake caramels sugar plum. Muffin chocolate bar carrot cake apple pie halvah lemon 
+                        drops gummi bears oat cake. Marzipan chocolate bar sesame snaps powder caramels danish donut 
+                        caramels cake. Apple pie bonbon toffee soufflé tootsie roll oat cake lemon drops sweet roll. 
+                        Chocolate toffee bonbon biscuit cake jelly beans caramels. Biscuit toffee sesame snaps cake sugar 
+                        plum biscuit soufflé cupcake. Pie dragée croissant tiramisu muffin sweet roll. Cupcake biscuit 
+                        pudding sesame snaps. Candy cupcake pie apple pie gingerbread. Brownie cupcake cotton candy 
+                        pudding jelly beans. Donut gummies soufflé ice cream pie ice cream sweet roll dragée. Jujubes 
+                        jelly beans oat cake lollipop croissant cookie donut. Candy canes sugar plum dragée pudding.
+                        Cotton candy cake cotton candy sesame snaps croissant. Dessert sweet sweet roll cotton candy. 
+                        Ice cream lemon drops topping soufflé ice cream halvah soufflé chocolate cake. Caramels muffin 
+                        cheesecake liquorice topping liquorice fruitcake. Candy biscuit icing apple pie sweet roll icing. 
+                        Cotton candy lollipop topping cupcake halvah. Croissant carrot cake halvah cake cheesecake sweet 
+                        bear claw jujubes tart. Sugar plum lollipop tart powder jelly-o marshmallow. Icing danish halvah 
+                        fruitcake. Pie sweet roll cake tart lollipop bear claw. Brownie topping jujubes candy canes 
+                        caramels gummi bears icing sesame snaps powder. Jelly ice cream dessert gummies tart.
+
+                        Chocolate bar danish tootsie roll apple pie danish. Lemon drops fruitcake macaroon jelly jelly-o 
+                        candy canes fruitcake caramels sugar plum. Muffin chocolate bar carrot cake apple pie halvah lemon 
+                        drops gummi bears oat cake. Marzipan chocolate bar sesame snaps powder caramels danish donut 
+                        caramels cake. Apple pie bonbon toffee soufflé tootsie roll oat cake lemon drops sweet roll. 
+                        Chocolate toffee bonbon biscuit cake jelly beans caramels. Biscuit toffee sesame snaps cake sugar 
+                        plum biscuit soufflé cupcake. Pie dragée croissant tiramisu muffin sweet roll. Cupcake biscuit 
+                        pudding sesame snaps. Candy cupcake pie apple pie gingerbread. Brownie cupcake cotton candy 
+                        pudding jelly beans. Donut gummies soufflé ice cream pie ice cream sweet roll dragée. Jujubes 
+                        jelly beans oat cake lollipop croissant cookie donut. Candy canes sugar plum dragée pudding.
+                        Cotton candy cake cotton candy sesame snaps croissant. Dessert sweet sweet roll cotton candy. 
+                        Ice cream lemon drops topping soufflé ice cream halvah soufflé chocolate cake. Caramels muffin 
+                        cheesecake liquorice topping liquorice fruitcake. Candy biscuit icing apple pie sweet roll icing. 
+                        Cotton candy lollipop topping cupcake halvah. Croissant carrot cake halvah cake cheesecake sweet 
+                        bear claw jujubes tart. Sugar plum lollipop tart powder jelly-o marshmallow. Icing danish halvah 
+                        fruitcake. Pie sweet roll cake tart lollipop bear claw. Brownie topping jujubes candy canes 
+                        caramels gummi bears icing sesame snaps powder. Jelly ice cream dessert gummies tart.
+
+                        Chocolate bar danish tootsie roll apple pie danish. Lemon drops fruitcake macaroon jelly jelly-o 
+                        candy canes fruitcake caramels sugar plum. Muffin chocolate bar carrot cake apple pie halvah lemon 
+                        drops gummi bears oat cake. Marzipan chocolate bar sesame snaps powder caramels danish donut 
+                        caramels cake. Apple pie bonbon toffee soufflé tootsie roll oat cake lemon drops sweet roll. 
+                        Chocolate toffee bonbon biscuit cake jelly beans caramels. Biscuit toffee sesame snaps cake sugar 
+                        plum biscuit soufflé cupcake. Pie dragée croissant tiramisu muffin sweet roll. Cupcake biscuit 
+                        pudding sesame snaps. Candy cupcake pie apple pie gingerbread. Brownie cupcake cotton candy 
+                        pudding jelly beans. Donut gummies soufflé ice cream pie ice cream sweet roll dragée. Jujubes 
+                        jelly beans oat cake lollipop croissant cookie donut. Candy canes sugar plum dragée pudding.
+                        Cotton candy cake cotton candy sesame snaps croissant. Dessert sweet sweet roll cotton candy. 
+                        Ice cream lemon drops topping soufflé ice cream halvah soufflé chocolate cake. Caramels muffin 
+                        cheesecake liquorice topping liquorice fruitcake. Candy biscuit icing apple pie sweet roll icing. 
+                        Cotton candy lollipop topping cupcake halvah. Croissant carrot cake halvah cake cheesecake sweet 
+                        bear claw jujubes tart. Sugar plum lollipop tart powder jelly-o marshmallow. Icing danish halvah 
+                        fruitcake. Pie sweet roll cake tart lollipop bear claw. Brownie topping jujubes candy canes 
+                        caramels gummi bears icing sesame snaps powder. Jelly ice cream dessert gummies tart.
+                    </p>
+                </div>
+                <div id="gameContainer" class="row" style="display:none">
+                    <div class="container">
+                        <div id="gameContainerPlayer" class="row">
+
                         </div>
+                        <div id="gameContainerSettings" class="row">
+                            <form>
+                                <div class="form-group row">
+                                    <label for="gameWordsLimit" class="col-sm-2 col-form-label">Words limit</label>
+                                    <div class="col-sm-10">
+                                        <input type="number" class="form-control" id="gameWordsLimit" value="20">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                        <label for="gameMode" class="col-sm-2 col-form-label">Mode</label>
+                                        <div class="col-sm-10">
+                                            <select class="form-control" id="gameMode" placeholder="Source">
+                                            </select>
+                                        </div>
+                                    </div>
+                                <div class="form-group row">
+                                    <label for="gameSubject" class="col-sm-2 col-form-label">Subject</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" id="gameSubject" placeholder="Subject">
+                                            <option value="any">Any</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="gameSource" class="col-sm-2 col-form-label">Source</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" id="gameSource" placeholder="Source">
+                                            <option value="any">Any</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
                         
+                        </div>
+                    </div>
+                    
+                </div>
+                <div id="editorContainer" class="centerContent" style="display:none">
+                    <div class="row row-no-gutters" style="margin:auto;">
+                        <div class="col-md-8">
+                            <div id="messageContainer" class="col alert alert-success container-fluid" style=" margin-top: 15px;" role="alert">
+                                [Miejsce na Wyświetlanie Komunikatów]
+                            </div>
+                        </div>
+                        <div class="col-md-4" style="margin: auto;">
+                            <form class="form my-2 my-lg-0">
+                                <input id="searchBar" readonly class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="row row-no-gutters">
                         <table class="table table-responsive table-striped table-light table-hover ">
                             <thead>
                                 <tr>
@@ -108,29 +189,63 @@
                         </table>
                     </div>
                 </div>
-            </div>
-            <div id="aboutContainer" class="row" style="display:none">
-                <p>
-                    Icing candy canes sweet chocolate bar cotton candy gummies halvah toffee marshmallow. Cheesecake 
-                    fruitcake bonbon. Pudding pudding liquorice. Wafer lemon drops toffee pudding jelly beans. Powder 
-                    marzipan pastry dragée oat cake croissant sesame snaps bonbon cotton candy. Tootsie roll ice 
-                    cream soufflé topping muffin. Sweet oat cake marzipan cupcake chocolate jujubes. Sugar plum 
-                    chocolate jelly gummies pastry apple pie oat cake sugar plum liquorice. Apple pie carrot cake 
-                    bear claw chocolate biscuit. Halvah croissant jelly danish chupa chups. Dragée apple pie powder 
-                    powder. Powder donut soufflé.
-                    Cake marzipan caramels candy cake jelly beans candy canes. Dessert jelly jelly beans. Carrot cake 
-                    caramels oat cake powder cotton candy caramels lollipop. Candy canes jelly macaroon tiramisu 
-                    gingerbread powder cupcake donut. Gummies jelly-o gingerbread lemon drops powder pudding 
-                    cheesecake pie. Candy canes caramels jelly chocolate cake donut. Tootsie roll marshmallow 
-                    dessert liquorice sugar plum jelly-o. Lemon drops cotton candy dessert. Bonbon lemon drops gummi 
-                    bears chupa chups caramels cotton candy oat cake jujubes chupa chups. Powder fruitcake cookie 
-                    chocolate cake macaroon macaroon cupcake topping. Fruitcake danish soufflé tiramisu brownie wafer 
-                    cotton candy cupcake. Jelly cake cake.
-                </p>
-            </div>
+                <div id="aboutContainer" class="row" style="display:none">
+                    <p>
+                        Icing candy canes sweet chocolate bar cotton candy gummies halvah toffee marshmallow. Cheesecake 
+                        fruitcake bonbon. Pudding pudding liquorice. Wafer lemon drops toffee pudding jelly beans. Powder 
+                        marzipan pastry dragée oat cake croissant sesame snaps bonbon cotton candy. Tootsie roll ice 
+                        cream soufflé topping muffin. Sweet oat cake marzipan cupcake chocolate jujubes. Sugar plum 
+                        chocolate jelly gummies pastry apple pie oat cake sugar plum liquorice. Apple pie carrot cake 
+                        bear claw chocolate biscuit. Halvah croissant jelly danish chupa chups. Dragée apple pie powder 
+                        powder. Powder donut soufflé.
+                        Cake marzipan caramels candy cake jelly beans candy canes. Dessert jelly jelly beans. Carrot cake 
+                        caramels oat cake powder cotton candy caramels lollipop. Candy canes jelly macaroon tiramisu 
+                        gingerbread powder cupcake donut. Gummies jelly-o gingerbread lemon drops powder pudding 
+                        cheesecake pie. Candy canes caramels jelly chocolate cake donut. Tootsie roll marshmallow 
+                        dessert liquorice sugar plum jelly-o. Lemon drops cotton candy dessert. Bonbon lemon drops gummi 
+                        bears chupa chups caramels cotton candy oat cake jujubes chupa chups. Powder fruitcake cookie 
+                        chocolate cake macaroon macaroon cupcake topping. Fruitcake danish soufflé tiramisu brownie wafer 
+                        cotton candy cupcake. Jelly cake cake.
+                    </p>
+                </div>
         </main>
-        <footer>
-            <div class="row">Icons made by <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect"> Pixel perfect </a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com </a></div>
+        <footer class="footer">
+            <div class="sociallink">
+                <nav class="nav fixed-bottom bg-dark justify-content-center">
+                    <a href="https://github.com/Duch003" target="_blank" class="nav-link github"><i class="icon-github-circled"></i></a>
+                    <a href="https://www.linkedin.com/in/tomasz-mankin" target="_blank" class="nav-link linkedin"><i class="icon-linkedin-squared"></i></a>
+                    <span class="nav-link disabled" style="padding-top: 37px;" aria-disabled="true">2019 &copy; Tomasz Mankin</span>
+                </nav>
+                
+            </div>
+            
         </footer>
+        <!-- <footer class="footer py-4 bg-dark fixed-bottom">
+            <div class="container">
+                <div class="d-inline-flex">
+                    <div class="card text-center border-0 bg-dark" >
+                        <div class="card-body sociallink" >
+                            <a href="https://github.com/Duch003" target="_blank" class="card-link github"><i class="icon-github-circled"></i></a>
+                            <a href="https://www.linkedin.com/in/tomasz-mankin" target="_blank" class="card-link linkedin"><i class="icon-linkedin-squared"></i></a>
+                            <h6 class="card-subtitle mb-2 text-muted">2019 &copy; Tomasz Mankin</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer> -->
+            
+
+            <!-- <div class="container">
+                <div class="d-inline-flex">
+                    <div class="github">
+                        <a href="https://github.com/Duch003" target="_blank" class="sociallink"><i class="icon-github-circled"></i></a>
+                    </div>
+                    <div class="linkedin">
+                        <a href="https://www.linkedin.com/in/tomasz-mankin" target="_blank" class="sociallink"><i class="icon-linkedin-squared"></i></a>
+                    </div>
+                </div>
+                <div style="clear: both;"></div>
+                <div class="d-inline-flex">2019 &copy; Tomasz Mankin</div>
+            </div> -->
     </body>
 </html>
