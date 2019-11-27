@@ -13,5 +13,7 @@ namespace RestApi.DatabaseAccess.Connectors
         Task<IEnumerable<Sentence>> GetSentencesAsync();
         Task<IEnumerable<Sentence>> GetSentencesAsync(string pattern);
         Task UpdateAsync(Sentence sentence);
+        Task<IEnumerable<string>> GetAllSources();
+        Task<IEnumerable<string>> GetAllSubjects();
     }
 }

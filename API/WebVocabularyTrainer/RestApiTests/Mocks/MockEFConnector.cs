@@ -103,5 +103,18 @@ namespace RestApiTests.Mocks
             _context.Update(sentence);
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
+
+        public async Task<IEnumerable<string>> GetAllSources() =>
+             await _context.Sentences
+             .Select(item => item.Source)
+             .Distinct()
+             .ToListAsync()
+             .ConfigureAwait(false);
+        public async Task<IEnumerable<string>> GetAllSubjects() =>
+            await _context.Sentences
+            .Select(item => item.Subject)
+            .Distinct()
+            .ToListAsync()
+            .ConfigureAwait(false);
     }
 }

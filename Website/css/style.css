@@ -18,8 +18,9 @@ main
 	height: 80px;
 	background-color: #0E76A8;
     float: left;
-    text-align: center;
+    text-align: left;
     text-decoration: none;
+    padding: 8px 0px 0px 8px;
 }
 
 .linkedin:hover
@@ -39,6 +40,7 @@ main
     float: left;
     text-align: center;
     text-decoration: none;
+    padding: 8px 0px 0px 9px;
 }
 
 .github:hover

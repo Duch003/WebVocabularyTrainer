@@ -7,8 +7,8 @@ namespace RestApi.Data.Models
 {
     public enum Mode
     {
-        PrimaryToForeign,
-        ForeignToPrimary,
+        TranslateToForeign,
+        TranslateToPrimary,
         Random
     }
 }

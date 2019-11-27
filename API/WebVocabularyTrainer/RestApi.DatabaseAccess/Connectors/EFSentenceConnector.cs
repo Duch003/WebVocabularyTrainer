@@ -84,5 +84,16 @@ namespace RestApi.DatabaseAccess.Connectors
             _context.Sentences.Remove(sentence);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<string>> GetAllSources() => 
+            await _context.Sentences
+            .Select(item => item.Source)
+            .Distinct()
+            .ToListAsync();
+        public async Task<IEnumerable<string>> GetAllSubjects() =>
+            await _context.Sentences
+            .Select(item => item.Subject)
+            .Distinct()
+            .ToListAsync();
     }
 }

@@ -13,7 +13,10 @@
 
         <!-- Bootstrap 4 Beta. -->
         <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
         <script src="js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
 
         <!--Bootbox-->
         <script src="js/bootbox.min.js" type="text/javascript"></script>
@@ -31,7 +34,7 @@
     </head>
     <body>
         <header>
-            <nav class="navbar fixed-top nav-pills bg-dark nav-fill">
+            <nav class="navbar fixed-top nav-pills bg-dark justify-content-center">
                 <a id="navToRules" class="nav-link active" href="#">Rules</a>
                 <a id="navToGame" class="nav-link" href="#">Learn</a>
                 <a id="navToEditor" class="nav-link" href="#">Manage dictionary</a>
@@ -116,40 +119,48 @@
                 </div>
                 <div id="gameContainer" class="row" style="display:none">
                     <div class="container">
-                        <div id="gameContainerPlayer" class="row">
+                        <div id="gameContainerPlayer" class="row" style="display:none">
 
                         </div>
                         <div id="gameContainerSettings" class="row">
-                            <form>
+                            <form class="row-no-gutters" style="margin:auto;">
                                 <div class="form-group row">
-                                    <label for="gameWordsLimit" class="col-sm-2 col-form-label">Words limit</label>
-                                    <div class="col-sm-10">
-                                        <input type="number" class="form-control" id="gameWordsLimit" value="20">
+                                    <label for="gameWordsLimit" class="col-lg-4 col-form-label">Phrases</label>
+                                    <div class="col-lg-8">
+                                        <input type="number" class="form-control form-control-bg" id="gameWordsLimit" value="20">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                        <label for="gameMode" class="col-sm-2 col-form-label">Mode</label>
-                                        <div class="col-sm-10">
-                                            <select class="form-control" id="gameMode" placeholder="Source">
-                                            </select>
-                                        </div>
+                                    <label for="gameRepeats" class="col-lg-4 col-form-label">Repeats</label>
+                                    <div class="col-lg-8">
+                                        <input type="number" class="form-control form-control-bg" id="gameRepeats" value="3">
                                     </div>
+                                </div>
                                 <div class="form-group row">
-                                    <label for="gameSubject" class="col-sm-2 col-form-label">Subject</label>
-                                    <div class="col-sm-10">
-                                        <select class="form-control" id="gameSubject" placeholder="Subject">
-                                            <option value="any">Any</option>
+                                    <label for="gameMode" class="col-lg-4 col-form-label">Mode</label>
+                                    <div class="col-lg-8">
+                                        <select class="form-control form-control-bg" id="gameMode" placeholder="Source">
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="gameSource" class="col-sm-2 col-form-label">Source</label>
-                                    <div class="col-sm-10">
-                                        <select class="form-control" id="gameSource" placeholder="Source">
+                                    <label for="gameSubject" class="col-lg-4 col-form-label">Subject</label>
+                                    <div class="col-lg-8">
+                                        <select class="form-control selectpicker form-control-bg" multiple="" id="gameSubject" placeholder="Subject">
+                                            <option value="any">Any</option>
+                                            <option value="any">Second</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="gameSource" class="col-lg-4 col-form-label">Source</label>
+                                    <div class="col-lg-8">
+                                        <select class="form-control selectpicker form-control-bg " multiple="" id="gameSource" placeholder="Source">
                                             <option value="any">Any</option>
                                         </select>
                                     </div>
                                 </div>
+                                <button class="btn btn-primary btn-lg btn-block" id="submitGameSettings">Start the game!</button>
                             </form>
                         
                         </div>
