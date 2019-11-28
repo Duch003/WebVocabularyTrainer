@@ -25,30 +25,39 @@ namespace RestApiTests.Tests
         }
 
         [Fact]
-        public void GetSettingsForm_ReturnsSettingsForm()
+        public async void GetSettingsForm_ReturnsResultWithDefaultSettings()
         {
             //Arrange
+            //Both collections has to cantains additional record called "All"
             var subjectsCount = _connector.Context.Sentences
                 .Select(x => x.Subject)
                 .Distinct()
-                .Count();
+                .Count() + 1;
             var sourcesCount = _connector.Context.Sentences
                 .Select(x => x.Source)
                 .Distinct()
-                .Count();
+                .Count() + 1;
 
             //Act
-            var output = _service.GetSettingsForm();
+            var output = await _service.GetSettingsForm().ConfigureAwait(false);
 
             //Assert
-            Assert.True(output != null);
-            Assert.Equal(_validSettings.Mode, output.Mode);
-            Assert.Equal(_validSettings.PhrasesUpperLimit, output.PhrasesUpperLimit);
-            Assert.Equal(_validSettings.Repeats, output.Repeats);
-            Assert.True(output.Sources != null);
-            Assert.True(output.Sources.Count == sourcesCount);
-            Assert.True(output.Subjects != null);
-            Assert.True(output.Subjects.Count == sourcesCount);
+            Assert.NotNull(output);
+            Assert.True(output.IsFine);
+            Assert.NotNull(output.Output);
+            Assert.Null(output.Exception);
+
+            Assert.Equal(_validSettings.Mode, output.Output.Mode);
+            Assert.Equal(_validSettings.PhrasesUpperLimit, output.Output.PhrasesUpperLimit);
+            Assert.Equal(_validSettings.Repeats, output.Output.Repeats);
+            Assert.NotNull(output.Output.Sources);
+            Assert.Equal(output.Output.Sources.Count, sourcesCount);
+            Assert.Contains("All", output.Output.Sources);
+            Assert.NotNull(output.Output.Subjects);
+            Assert.Equal(output.Output.Subjects.Count, subjectsCount);
+            Assert.Contains("All", output.Output.Subjects);
         }
+
+
     }
 }

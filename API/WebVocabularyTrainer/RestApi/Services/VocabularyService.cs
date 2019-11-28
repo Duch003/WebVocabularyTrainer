@@ -122,6 +122,16 @@ namespace RestApi.Services
                 _logger.Info($"Property Subject is invalid: <<{entry.Subject}>>.");
                 return new Result<int>(422, new ArgumentNullException($"Property Subject is not acceptable: <<{entry.Subject}>>.")); //Unprocessable entity
             }
+            else if (entry.Subject == "All")
+            {
+                _logger.Info($"Value <<All>> is forbidden for field Subject.");
+                return new Result<int>(422, new ArgumentException($"Value <<All>> is forbidden for field Subject.")); //Unprocessable entity
+            }
+            else if (entry.Source == "All")
+            {
+                _logger.Info($"Value <<All>> is forbidden for field Source.");
+                return new Result<int>(422, new ArgumentException($"Value <<All>> is forbidden for field Source.")); //Unprocessable entity
+            }
 
             var existingEntry = await _connector.GetSentenceAsync(entry.Primary, entry.Foreign);
             if (existingEntry != null)

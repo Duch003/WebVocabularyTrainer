@@ -19,10 +19,22 @@ namespace RestApi.Services
             _sentenceConnector = sentenceConnector;
         }
 
-        public Settings GetSettingsForm()
+        public async Task<Result<Settings>> GetSettingsForm()
         {
-            var sources = _sentenceConnector.
-            return new Settings();
+            try
+            {
+                var sources = (await _sentenceConnector.GetAllSources()).ToList();
+                sources.Add("All");
+                var subjects = (await _sentenceConnector.GetAllSubjects()).ToList();
+                subjects.Add("All");
+                var output = new Result<Settings>(new Settings(subjects, sources));
+                return output;
+            }
+            catch(Exception e)
+            {
+                var output = new Result<Settings>(null, e);
+                return output;
+            }
         }
     }
 }

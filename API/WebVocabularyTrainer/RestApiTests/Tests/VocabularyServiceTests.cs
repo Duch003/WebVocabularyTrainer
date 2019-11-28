@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Xunit;
 
 namespace RestApiTests.Tests
@@ -21,6 +22,8 @@ namespace RestApiTests.Tests
         private Sentence _entry;
         private Sentence _fullEntry;
         private Sentence _badIdEntry;
+        private Sentence _badSubjectEntry;
+        private Sentence _badSourceEntry;
         private Sentence _negativeIdEntry;
         private Sentence _nullPrimaryEntry;
         private Sentence _emptyPrimaryEntry;
@@ -59,6 +62,21 @@ namespace RestApiTests.Tests
                 Foreign = "Invalid",
                 Primary = "Nieprawidłowy",
                 Subject = "Test"
+            };
+            _badSubjectEntry = new Sentence
+            {
+                ID = 5,
+                Foreign = "Invalid",
+                Primary = "Nieprawidłowy",
+                Subject = "All"
+            };
+            _badSourceEntry = new Sentence
+            {
+                ID = 5,
+                Foreign = "Invalid",
+                Primary = "Nieprawidłowy",
+                Subject = "Test",
+                Source = "All"
             };
             _negativeIdEntry = new Sentence
             {
@@ -356,6 +374,30 @@ namespace RestApiTests.Tests
             Assert.True(entry.Source == "UnitTests");
         }
 
+        [Fact]
+        public async void Add_ForbidsSourceWithValueAll_ReturnsResult422WithError()
+        {
+            //Act
+            var output = await _service.AddAsync(_badSourceEntry).ConfigureAwait(false);
+
+            //Assert
+            Assert.False(output.IsFine);
+            Assert.NotNull(output.Exception);
+            Assert.Equal(422, output.Output);
+        }
+
+        [Fact]
+        public async void Add_ForbidsSubjectWithValueAll_ReturnsResult422WithError()
+        {
+            //Act
+            var output = await _service.AddAsync(_badSubjectEntry).ConfigureAwait(false);
+
+            //Assert
+            Assert.False(output.IsFine);
+            Assert.NotNull(output.Exception);
+            Assert.Equal(422, output.Output);
+        }
+
 
         [Fact]
         public async void Add_InputIsNull_ReturnsResult422WithException()
@@ -528,7 +570,7 @@ namespace RestApiTests.Tests
             update.Subject = "This is updated subject.";
 
             //Act
-            var output = await _service.UpdateAsync(update).ConfigureAwait(false);
+            var output = await _service.UpdateAsync(update).ConfigureAwait(true);
 
             //Assert
             Assert.True(output.IsFine);
@@ -548,7 +590,7 @@ namespace RestApiTests.Tests
         public async void Update_InputIsNull_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.UpdateAsync(null).ConfigureAwait(false);
+            var output = await _service.UpdateAsync(null).ConfigureAwait(true);
 
             //Assert
             Assert.False(output.IsFine);
@@ -560,7 +602,7 @@ namespace RestApiTests.Tests
         public async void Update_InputHasNullPrimaryProperty_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.UpdateAsync(_nullPrimaryEntry).ConfigureAwait(false);
+            var output = await _service.UpdateAsync(_nullPrimaryEntry).ConfigureAwait(true);
 
             //Assert
             Assert.False(output.IsFine);
@@ -572,7 +614,7 @@ namespace RestApiTests.Tests
         public async void Update_InputHasEmptyPrimaryProperty_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.UpdateAsync(_emptyPrimaryEntry).ConfigureAwait(false);
+            var output = await _service.UpdateAsync(_emptyPrimaryEntry).ConfigureAwait(true);
 
             //Assert
             Assert.False(output.IsFine);
@@ -584,7 +626,7 @@ namespace RestApiTests.Tests
         public async void Update_InputHasWhiteSpacePrimaryProperty_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.UpdateAsync(_whiteSpacePrimaryEntry).ConfigureAwait(false);
+            var output = await _service.UpdateAsync(_whiteSpacePrimaryEntry).ConfigureAwait(true);
 
             //Assert
             Assert.False(output.IsFine);
@@ -596,7 +638,7 @@ namespace RestApiTests.Tests
         public async void Update_InputHasNullForeignProperty_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.UpdateAsync(_nullForeignEntry).ConfigureAwait(false);
+            var output = await _service.UpdateAsync(_nullForeignEntry).ConfigureAwait(true);
 
             //Assert
             Assert.False(output.IsFine);
@@ -608,7 +650,7 @@ namespace RestApiTests.Tests
         public async void Update_InputHasEmptyForeignProperty_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.UpdateAsync(_emptyForeignEntry).ConfigureAwait(false);
+            var output = await _service.UpdateAsync(_emptyForeignEntry).ConfigureAwait(true);
 
             //Assert
             Assert.False(output.IsFine);
@@ -620,7 +662,7 @@ namespace RestApiTests.Tests
         public async void Update_InputHasWhiteSpaceForeignProperty_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.UpdateAsync(_whiteSpaceForeignEntry).ConfigureAwait(false);
+            var output = await _service.UpdateAsync(_whiteSpaceForeignEntry).ConfigureAwait(true);
 
             //Assert
             Assert.False(output.IsFine);
@@ -632,7 +674,7 @@ namespace RestApiTests.Tests
         public async void Update_InputHasNullSubjectProperty_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.UpdateAsync(_nullSubjectEntry).ConfigureAwait(false);
+            var output = await _service.UpdateAsync(_nullSubjectEntry).ConfigureAwait(true);
 
             //Assert
             Assert.False(output.IsFine);
@@ -644,7 +686,7 @@ namespace RestApiTests.Tests
         public async void Update_InputHasEmptySubjectProperty_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.UpdateAsync(_emptySubjectEntry).ConfigureAwait(false);
+            var output = await _service.UpdateAsync(_emptySubjectEntry).ConfigureAwait(true);
 
             //Assert
             Assert.False(output.IsFine);
@@ -656,7 +698,7 @@ namespace RestApiTests.Tests
         public async void Update_InputHasWhiteSpaceSubjectProperty_ReturnsResult422WithException()
         {
             //Act
-            var output = await _service.UpdateAsync(_whiteSpaceSubjectEntry).ConfigureAwait(false);
+            var output = await _service.UpdateAsync(_whiteSpaceSubjectEntry).ConfigureAwait(true);
 
             //Assert
             Assert.False(output.IsFine);
@@ -684,8 +726,9 @@ namespace RestApiTests.Tests
             };
 
             //Act
-            var output = await _service.UpdateAsync(noExistingEntry).ConfigureAwait(false);
-            var output2 = await _service.UpdateAsync(noExistingEntry2).ConfigureAwait(false);
+            Thread.Sleep(100);//Inaczej wali błędem
+            var output = await _service.UpdateAsync(noExistingEntry).ConfigureAwait(true);
+            var output2 = await _service.UpdateAsync(noExistingEntry2).ConfigureAwait(true);
 
             //Assert
             Assert.False(output.IsFine);

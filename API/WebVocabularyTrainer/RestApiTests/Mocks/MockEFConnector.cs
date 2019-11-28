@@ -110,6 +110,7 @@ namespace RestApiTests.Mocks
              .Distinct()
              .ToListAsync()
              .ConfigureAwait(false);
+
         public async Task<IEnumerable<string>> GetAllSubjects() =>
             await _context.Sentences
             .Select(item => item.Subject)
