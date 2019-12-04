@@ -15,5 +15,6 @@ namespace RestApi.DatabaseAccess.Connectors
         Task UpdateAsync(Sentence sentence);
         Task<IEnumerable<string>> GetAllSources();
         Task<IEnumerable<string>> GetAllSubjects();
+        Task<IEnumerable<Sentence>> GetSentencesAsync(Settings settings);
     }
 }

@@ -32,8 +32,34 @@ namespace RestApi.Services
             }
             catch(Exception e)
             {
-                var output = new Result<Settings>(null, e);
+                return new Result<Settings>(null, e);
+            }
+        }
+
+        public async Task<Result<Game>> GetGame(Settings settings)
+        {
+            if(settings is null)
+            {
+                throw new ArgumentNullException("Parameter <<settings>> is null.");
+            }
+
+            if(settings.Repeats < 1)
+            {
+                settings.Repeats = 1;
+            }
+
+            
+
+
+            try
+            {
+                var result = await _sentenceConnector.GetSentencesAsync(settings);
+                var output = new Result<Game>(new Game { Sentences = result, Mode = settings.Mode });
                 return output;
+            }
+            catch(Exception e)
+            {
+                return new Result<Game>(null, e);
             }
         }
     }

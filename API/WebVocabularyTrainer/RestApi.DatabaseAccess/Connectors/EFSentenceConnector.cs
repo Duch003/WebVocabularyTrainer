@@ -50,6 +50,21 @@ namespace RestApi.DatabaseAccess.Connectors
             => await _context.Sentences
             .ToListAsync();
 
+        public async Task<IEnumerable<Sentence>> GetSentencesAsync(Settings settings)
+        {
+            if (settings.Sources.Contains("All"))
+            {
+                //TODO How should I assign proper filters? All/Particular
+            }
+            var output = await _context.Sentences
+              .Where(item => settings.Sources.Contains(item.Source) && settings.Subjects.Contains(item.Subject))
+              .OrderBy(item => item.LevelOfRecognition)
+              .Take((int)settings.PhrasesUpperLimit)
+              .ToListAsync();
+            output.ForEach(item => item.AttemptsLeft = (int)settings.PhrasesUpperLimit);
+            return output;
+        }
+
         //ID 5 => InvalidOperationException
         //ID -1 - just adds id
         //null => ArgumentNullException
