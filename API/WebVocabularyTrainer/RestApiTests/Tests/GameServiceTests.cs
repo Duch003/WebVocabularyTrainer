@@ -15,13 +15,20 @@ namespace RestApiTests.Tests
         private MockEFConnector _connector;
         private GameServiceLayer _service;
         private Settings _validSettings;
+       
 
         public GameServiceTests()
         {
             _connector = EFConnectorFactory.Instance();
             _service = new GameServiceLayer(_connector);
 
-            _validSettings = new Settings();
+            _validSettings = new Settings
+            {
+                Mode = Mode.Random,
+                Repeats = 3,
+                PhrasesUpperLimit = 10,
+
+            };
         }
 
         [Fact]
@@ -58,6 +65,9 @@ namespace RestApiTests.Tests
             Assert.Contains("All", output.Output.Subjects);
         }
 
+        public async void GetGame_ReceivesValidSettings_ReturnsResultWithGame()
+        {
 
+        }
     }
 }

@@ -40,7 +40,7 @@ namespace RestApi.Services
         {
             if(settings is null)
             {
-                throw new ArgumentNullException("Parameter <<settings>> is null.");
+                settings = new Settings();
             }
 
             if(settings.Repeats < 1)
@@ -48,8 +48,17 @@ namespace RestApi.Services
                 settings.Repeats = 1;
             }
 
-            
+            if(settings.Sources is null || !settings.Sources.Any())
+            {
+                settings.Sources = new List<string>();
+                settings.Sources.Add("All");
+            }
 
+            if (settings.Subjects is null || !settings.Subjects.Any())
+            {
+                settings.Subjects = new List<string>();
+                settings.Subjects.Add("All");
+            }
 
             try
             {

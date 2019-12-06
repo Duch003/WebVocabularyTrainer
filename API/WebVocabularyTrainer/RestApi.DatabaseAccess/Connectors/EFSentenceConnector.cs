@@ -52,12 +52,40 @@ namespace RestApi.DatabaseAccess.Connectors
 
         public async Task<IEnumerable<Sentence>> GetSentencesAsync(Settings settings)
         {
+            Func<List<string>, string, bool> sourcesFilter = null;
+            Func<List<string>, string, bool> subjectsFilter = null;
             if (settings.Sources.Contains("All"))
             {
-                //TODO How should I assign proper filters? All/Particular
+                sourcesFilter = (list, item) =>
+                {
+                    return true;
+                };
             }
+            else
+            {
+                sourcesFilter = (list, item) =>
+                {
+                    return list.Contains(item);
+                };
+            }
+
+            if (settings.Subjects.Contains("All"))
+            {
+                subjectsFilter = (list, item) =>
+                {
+                    return true;
+                };
+            }
+            else
+            {
+                subjectsFilter = (list, item) =>
+                {
+                    return list.Contains(item);
+                };
+            }
+
             var output = await _context.Sentences
-              .Where(item => settings.Sources.Contains(item.Source) && settings.Subjects.Contains(item.Subject))
+              .Where(item => sourcesFilter(settings.Sources, item.Source) && subjectsFilter(settings.Subjects, item.Subject))
               .OrderBy(item => item.LevelOfRecognition)
               .Take((int)settings.PhrasesUpperLimit)
               .ToListAsync();
